@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1055445263937',
     projectId: 'i-chat-d0b42',
     storageBucket: 'i-chat-d0b42.appspot.com',
+    androidClientId: '1055445263937-k6vcnmiebg8e87om04i0ruvm0vlaladl.apps.googleusercontent.com',
+    iosClientId: '1055445263937-qp2rm3ajaiviqi28hoa0cg2kbnd6rrdj.apps.googleusercontent.com',
     iosBundleId: 'com.example.iChat',
   );
 }
