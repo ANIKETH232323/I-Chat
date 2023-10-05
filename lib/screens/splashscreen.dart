@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:i_chat/main.dart';
+import 'package:i_chat/screens/auth/login_screen.dart';
 import 'package:i_chat/screens/homescreen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(milliseconds: 150),(){
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor:Colors.transparent));
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Homescreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Loginscreen()));
     });
   }
 
