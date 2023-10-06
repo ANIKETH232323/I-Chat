@@ -29,7 +29,12 @@ class _LoginscreenState extends State<Loginscreen> {
   }
 
   handleGoogleButtonClick(){
+
+    // for showing progress bar
+    Dialogs.showProgressBar(context);
       _signInWithGoogle().then((user){
+        // for hiding progress bar
+        Navigator.pop(context);
         if(user != null){
           Navigator.pushReplacement(context,MaterialPageRoute(builder: (_)=> const Homescreen()));
         }
