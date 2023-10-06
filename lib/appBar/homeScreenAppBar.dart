@@ -17,7 +17,7 @@ class homeScreenAppBar extends StatelessWidget{
             ),
             child: AppBar(
               backgroundColor:Color.fromARGB(255, 88, 45, 210),
-              leading:IconButton(onPressed: (){}, icon: Image.asset('images/acc.png'),padding: EdgeInsets.only(left: 20),),
+              leading:IconButton(onPressed: (){}, icon: Image.asset('images/acc.png',width: 85,height: 85,),padding: EdgeInsets.symmetric(horizontal: mq.width * .02, vertical: 10),),
               title: const Text('I Chat',style: TextStyle(color: Colors.white),),
               actions: [
                 // 3dot button
