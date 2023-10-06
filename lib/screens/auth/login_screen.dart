@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/helper/dialoage.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/screens/homescreen.dart';
@@ -58,7 +59,7 @@ class _LoginscreenState extends State<Loginscreen> {
       );
 
       // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      return await ApIs.auth.signInWithCredential(credential);
     }
     catch(e){
       // log(' \n_signInWithGoogle: $e' as num);
