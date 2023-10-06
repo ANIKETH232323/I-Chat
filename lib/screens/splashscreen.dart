@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:i_chat/main.dart';
@@ -19,6 +23,17 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(milliseconds: 150),(){
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor:Colors.transparent));
+
+
+      if(FirebaseAuth.instance.currentUser != null){
+
+        log('\n user: ${FirebaseAuth.instance.currentUser}');
+
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Homescreen()));
+      }
+      else{
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Loginscreen()));
+      }
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Loginscreen()));
     });
   }
