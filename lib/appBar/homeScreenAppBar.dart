@@ -17,11 +17,11 @@ class homeScreenAppBar extends StatelessWidget{
             ),
             child: AppBar(
               backgroundColor:Color.fromARGB(255, 88, 45, 210),
-              leading: const Icon(CupertinoIcons.person),
+              leading:Image.asset('images/icon.png'),
               title: const Text('I Chat',style: TextStyle(color: Colors.white),),
               actions: [
                 // search button
-                IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
+                IconButton(onPressed: (){}, icon:Image.asset('images/user.png')),
 
                 // 3dot button
                 IconButton(onPressed: (){}, icon: const Icon(Icons.more_vert))
@@ -59,9 +59,6 @@ class homeScreenAppBar extends StatelessWidget{
                 fontWeight: FontWeight.bold
             ))),
           ),
-
-
-
         ],
       ),
     );
