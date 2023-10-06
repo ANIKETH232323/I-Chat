@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:i_chat/main.dart';
+import 'package:i_chat/widgets/chat_user_card.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -30,6 +32,14 @@ class _HomescreenState extends State<Homescreen> {
         child: FloatingActionButton(onPressed: (){},child: const Icon(Icons.add_comment_rounded
         ),),
       ),
+
+      body: ListView.builder(
+        physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.only(top: mq.height * .02),
+          itemCount: 16,
+          itemBuilder: (context,index){
+        return chat_user_card();
+      }),
     );
   }
 }
