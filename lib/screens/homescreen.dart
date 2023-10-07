@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/appBar/homeScreenAppBar.dart';
 import 'package:i_chat/main.dart';
+import 'package:i_chat/widgets/chat_user_card.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -18,14 +19,21 @@ class _HomescreenState extends State<Homescreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      topRight: Radius.circular(35))),
-              height: double.infinity,
-              margin: EdgeInsets.only(top: mq.height * .25),
+            Card(
+              margin: EdgeInsets.only(top: 158),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25))),
+
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ListView.builder(
+
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 15,
+                    itemBuilder: (context, index) {
+                      return chat_user_card();
+                    }),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -35,7 +43,9 @@ class _HomescreenState extends State<Homescreen> {
                   searchBox(),
                 ],
               ),
-            )
+            ),
+
+
           ],
         ),
         bottom: false,
@@ -52,18 +62,28 @@ class searchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.only(top: 55),
+
+      padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Colors.white60,
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: Colors.white)
-
       ),
       child: Column(
         children: [
           Row(
             children: [
-              Image.asset('images/search.png')
+              Flexible(child: SizedBox(
+                height: 40,
+                child: TextField(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(bottom: 10),
+                    hintText: "Search Message Here",
+                    border: InputBorder.none,
+                  ),
+                ),
+              )),
+              Icon(Icons.search,),
             ],
           )
         ],
@@ -78,6 +98,7 @@ class _HeaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,23 +112,6 @@ class _HeaderSection extends StatelessWidget {
             )
           ],
         ),
-        // Padding(
-        //   padding: const EdgeInsets.only(top: 120.0),
-        //   child: SizedBox(
-        //     width: 360,
-        //     height: 40,
-        //     child: TextField(
-        //       decoration: InputDecoration(
-        //           filled: true,
-        //           contentPadding: EdgeInsets.symmetric(horizontal: 18),
-        //           hintText: 'Search Messages',
-        //           hintStyle: TextStyle(color: Colors.white,),
-        //           fillColor: Colors.white30,
-        //           border: OutlineInputBorder(
-        //               borderRadius: BorderRadius.circular(25))),
-        //     ),
-        //   ),
-        // ),
 
       ],
     );
