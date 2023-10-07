@@ -1,9 +1,7 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/appBar/homeScreenAppBar.dart';
+import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/widgets/chat_user_card.dart';
 
 class Homescreen extends StatefulWidget {
@@ -14,6 +12,8 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
+  List<ChatUser> list = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,31 +24,40 @@ class _HomescreenState extends State<Homescreen> {
           children: [
             Card(
               margin: EdgeInsets.only(top: 158),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25))),
-
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.only(topLeft: Radius.circular(25))),
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: StreamBuilder(
                   stream: ApIs.firestore.collection('user').snapshots(),
-                  builder:(context,snapshot){
-                    final list = [];
-                    if(snapshot.hasData){
-
-                      final data =snapshot.data?.docs;
-                      for(var i in data!){
-                        log('Data: ${jsonEncode(i.data())}');
-                        list.add(i.data()['name']);
-                      }
-
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      // if Data is loading
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
+                        return const Center(child: CircularProgressIndicator());
+                      // if some or all data is loaded then show it
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        final data = snapshot.data?.docs;
+                        list = data
+                                ?.map((e) => ChatUser.fromJson(e.data()))
+                                .toList() ??
+                            [];
                     }
-                    return ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: list.length,
-                        itemBuilder: (context, index) {
-                          // return chat_user_card();
-                          return Text('Name:${list[index]}');
-                        });
+                    if(list.isNotEmpty){
+                      return ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: list.length,
+                          itemBuilder: (context, index) {
+                            return chat_user_card(user: list[index],);
+                            // return Text('Name:${list[index]}');
+                          });
+                    }
+                    else{
+                      return Center(child: Text('No Connection Found',style: TextStyle(fontSize: 18),));
+                    }
                   },
                 ),
               ),
@@ -78,7 +87,6 @@ class searchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 55),
-
       padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Colors.white60,
@@ -88,7 +96,8 @@ class searchBox extends StatelessWidget {
         children: [
           Row(
             children: [
-              Flexible(child: SizedBox(
+              Flexible(
+                  child: SizedBox(
                 height: 40,
                 child: TextField(
                   decoration: InputDecoration(
@@ -98,7 +107,9 @@ class searchBox extends StatelessWidget {
                   ),
                 ),
               )),
-              Icon(Icons.search,),
+              Icon(
+                Icons.search,
+              ),
             ],
           )
         ],
@@ -106,7 +117,6 @@ class searchBox extends StatelessWidget {
     );
   }
 }
-
 
 class _HeaderSection extends StatelessWidget {
   const _HeaderSection();
@@ -127,7 +137,6 @@ class _HeaderSection extends StatelessWidget {
             )
           ],
         ),
-
       ],
     );
   }
