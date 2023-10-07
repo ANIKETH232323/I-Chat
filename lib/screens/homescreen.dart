@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/appBar/homeScreenAppBar.dart';
-import 'package:i_chat/main.dart';
 import 'package:i_chat/widgets/chat_user_card.dart';
 
 class Homescreen extends StatefulWidget {
@@ -94,7 +92,7 @@ class searchBox extends StatelessWidget {
 
 
 class _HeaderSection extends StatelessWidget {
-  const _HeaderSection({super.key});
+  const _HeaderSection();
   @override
   Widget build(BuildContext context) {
     return Column(
