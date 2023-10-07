@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/appBar/homeScreenAppBar.dart';
 import 'package:i_chat/widgets/chat_user_card.dart';
 
@@ -15,6 +19,7 @@ class _HomescreenState extends State<Homescreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 88, 45, 210),
       body: SafeArea(
+        bottom: false,
         child: Stack(
           children: [
             Card(
@@ -24,13 +29,28 @@ class _HomescreenState extends State<Homescreen> {
 
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: ListView.builder(
+                child: StreamBuilder(
+                  stream: ApIs.firestore.collection('user').snapshots(),
+                  builder:(context,snapshot){
+                    final list = [];
+                    if(snapshot.hasData){
 
-                    physics: BouncingScrollPhysics(),
-                    itemCount: 15,
-                    itemBuilder: (context, index) {
-                      return chat_user_card();
-                    }),
+                      final data =snapshot.data?.docs;
+                      for(var i in data!){
+                        log('Data: ${jsonEncode(i.data())}');
+                        list.add(i.data()['name']);
+                      }
+
+                    }
+                    return ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: list.length,
+                        itemBuilder: (context, index) {
+                          // return chat_user_card();
+                          return Text('Name:${list[index]}');
+                        });
+                  },
+                ),
               ),
             ),
             Padding(
@@ -42,11 +62,8 @@ class _HomescreenState extends State<Homescreen> {
                 ],
               ),
             ),
-
-
           ],
         ),
-        bottom: false,
       ),
     );
   }
