@@ -8,7 +8,7 @@ import 'firebase_options.dart';
 
 late Size mq;
 Future main() async {
-  await dotenv.load(fileName: ".env_sample");
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown]).then((value){
