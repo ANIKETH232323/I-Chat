@@ -23,19 +23,30 @@ class _chatUser extends State<chat_user_card> {
 
     return Card(
       margin: EdgeInsets.symmetric(horizontal: mq.width * .04, vertical: 4),
+      elevation: 1,
       child: InkWell(
           onTap: (){},
           child: ListTile(
-
-            // leading: CircleAvatar(child: Icon(CupertinoIcons.person),),
-            leading: CachedNetworkImage(
-              imageUrl: "http://via.placeholder.com/350x150",
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(1),
+              child: CachedNetworkImage(
+                width: mq.height *.055,
+                height: mq.height *.055,
+                imageUrl: widget.user.image,
+                // placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => CircleAvatar(child: Icon(CupertinoIcons.person),backgroundColor: Colors.amberAccent),
+              ),
             ),
             title: Text(widget.user.name),
             subtitle: Text(widget.user.about,maxLines: 1,),
-            trailing: Text('12.00 PM',style: TextStyle(fontWeight:FontWeight.bold),),
+            trailing: Container(
+              width: 25,height: 25,
+              decoration: BoxDecoration(
+                color: Colors.blueAccent,
+                borderRadius: BorderRadius.circular(20)
+              ),
+            )
+            // trailing: Text('12.00 PM',style: TextStyle(fontWeight:FontWeight.bold),),
           )),
     );
   }
