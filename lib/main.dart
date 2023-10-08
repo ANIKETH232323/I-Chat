@@ -7,7 +7,7 @@ import 'firebase_options.dart';
 
 
 late Size mq;
-Future<void> main() async {
+Future main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
