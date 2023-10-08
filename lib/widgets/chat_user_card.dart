@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/main.dart';
@@ -25,7 +26,13 @@ class _chatUser extends State<chat_user_card> {
       child: InkWell(
           onTap: (){},
           child: ListTile(
-            leading: CircleAvatar(child: Icon(CupertinoIcons.person),),
+
+            // leading: CircleAvatar(child: Icon(CupertinoIcons.person),),
+            leading: CachedNetworkImage(
+              imageUrl: "http://via.placeholder.com/350x150",
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
             title: Text(widget.user.name),
             subtitle: Text(widget.user.about,maxLines: 1,),
             trailing: Text('12.00 PM',style: TextStyle(fontWeight:FontWeight.bold),),
