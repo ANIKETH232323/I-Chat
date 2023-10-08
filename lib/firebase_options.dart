@@ -17,6 +17,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 /// ```
 class DefaultFirebaseOptions {
   String avc =dotenv.get('GOOGLE_API_KE');
+  String avc2 =dotenv.get('IOS_CLIENT_ID_G');
+  String avc3 =dotenv.get('ANDROID_CLIENT_ID_G');
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       throw UnsupportedError(
@@ -65,8 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1055445263937',
     projectId: 'i-chat-d0b42',
     storageBucket: 'i-chat-d0b42.appspot.com',
-    androidClientId: '1055445263937-k6vcnmiebg8e87om04i0ruvm0vlaladl.apps.googleusercontent.com',
-    iosClientId: '1055445263937-qp2rm3ajaiviqi28hoa0cg2kbnd6rrdj.apps.googleusercontent.com',
+    androidClientId: 'avc3',
+    iosClientId: 'avc2',
     iosBundleId: 'com.example.iChat',
   );
 }
