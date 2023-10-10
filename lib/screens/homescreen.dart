@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/appBar/homeScreenAppBar.dart';
 import 'package:i_chat/models/chatUse.dart';
+import 'package:i_chat/screens/profile_screen.dart';
 import 'package:i_chat/widgets/chat_user_card.dart';
 
 class Homescreen extends StatefulWidget {
@@ -122,19 +123,17 @@ class _HeaderSection extends StatelessWidget {
   const _HeaderSection();
   @override
   Widget build(BuildContext context) {
+    List<ChatUser>list = [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CircleAvatar(
-              radius: 25,
-              backgroundImage: AssetImage('images/acc.png'),
-            ),
-            Custom_Navigation_Button(
-              icon: Icon(Icons.menu_rounded),
-            )
+            IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (_)=>ProfileScreen()));}, icon: new Image.asset("images/acc.png"),)
+            // Custom_Navigation_Button(
+            //   icon: Icon(Icons.menu_rounded),
+            // )
           ],
         ),
       ],

@@ -6,7 +6,7 @@ class Custom_Navigation_Button extends StatelessWidget {
   const Custom_Navigation_Button({
     super.key,
     required this.icon,
-    this.onPressed
+    required this.onPressed
   });
 
   @override
