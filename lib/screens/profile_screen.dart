@@ -101,13 +101,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           //
           //     )
           // ),
-          FloatingActionButton(onPressed: (){},
-            child: Text("Log Out"),
-          backgroundColor: Color.fromARGB(255, 222, 0, 0),
-          )
-        ]
+          Padding(
+            padding: const EdgeInsets.only(bottom: 48.0,left: 200),
+            child: SizedBox(
+              height: 56,
+              width: 160,
+              child: FloatingActionButton.extended(onPressed: (){},
+                  icon: Icon(Icons.logout),
+                  label: Text("Log Out",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500)),
+                  backgroundColor: Color.fromARGB(255, 222, 0, 0)),
+            ),
+          ),
+        ],
 
     );
+
   }
 }
 
