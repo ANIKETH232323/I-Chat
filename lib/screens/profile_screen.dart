@@ -88,8 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Positioned(
-            top: 260,
-            left: 235,
+            top: mq.height * .30,
+            left: mq.width * .59,
             child: FloatingActionButton(onPressed: () {},
                 child:Icon(Icons.edit,color: Colors.black,),
                 backgroundColor: Color.fromARGB(255, 217, 217, 217)),
