@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/chatUse.dart';
 
+
 class ProfileScreen extends StatefulWidget {
   // final ChatUser user;
   const ProfileScreen({super.key});
