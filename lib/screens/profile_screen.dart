@@ -27,11 +27,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: Color.fromARGB(255, 88, 45, 210),
             ),
           ),
-          Container(height:655,
+          Container(
+            height:mq.height * .71,
             decoration: BoxDecoration(color: Colors.white,
                 borderRadius: BorderRadius.only(topLeft:Radius.circular(45),topRight: Radius.circular(45))),),
           Positioned(
-            top: 175,
+            top: mq.height * .2,
             child: Column(
               children: [
                 Container(
@@ -73,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )),
                     )
                 ),
-                SizedBox(height: 45,),
+                SizedBox(height: mq.height *.04),
                 ElevatedButton(onPressed: (){},
                     child: Text("UPDATE",style: TextStyle(fontSize: 20,)),
                     style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(
@@ -103,10 +104,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           //     )
           // ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 48.0,left: 200),
+            padding:  EdgeInsets.only(bottom: mq.height * .03,left: mq.height * .2),
             child: SizedBox(
-              height: 56,
-              width: 160,
+              height: mq.height * .075,
+              width: mq.width * .40,
               child: FloatingActionButton.extended(onPressed: (){},
                   icon: Icon(Icons.logout),
                   label: Text("Log Out",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500)),
