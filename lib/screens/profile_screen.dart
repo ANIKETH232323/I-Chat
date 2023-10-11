@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:i_chat/api/apis.dart';
+import 'package:i_chat/helper/dialoage.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/chatUse.dart';
+import 'package:i_chat/screens/auth/login_screen.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -135,7 +139,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SizedBox(
               height: mq.height * .065,
               width: mq.width * .40,
-              child: FloatingActionButton.extended(onPressed: (){},
+              child: FloatingActionButton.extended(onPressed: () async {
+                Dialogs.showProgressBar(context);
+                await ApIs.auth.signOut().then((value) async => {
+                await GoogleSignIn().signOut().then((value) => {
+                  Navigator.pop(context),
+                  Navigator.pop(context),
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Loginscreen()))
+                })
+                });
+
+              },
                   icon: Icon(Icons.logout),
                   label: Text("Log Out",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500)),
                   backgroundColor: Color.fromARGB(255, 222, 0, 0)),
