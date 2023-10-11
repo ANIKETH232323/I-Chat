@@ -43,9 +43,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     image: DecorationImage(image: AssetImage('images/man.png'),
                         fit: BoxFit.cover),
                   ),),
+                SizedBox(height: mq.height * .02,),
+                // Edit Name
                 Container(
                   width: mq.height *.40,
-                  padding: EdgeInsets.only(top: 85),
+                  // padding: EdgeInsets.only(top:mq.height * .1),
                   child: Material(
                       child: TextField(style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                         keyboardType: TextInputType.name,
@@ -58,13 +60,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       )),
                 )
                 ),
+                // Mail Box
                 Container(
                     width: mq.height *.40,
-                    margin: EdgeInsets.only(top: 25),
+                    margin: EdgeInsets.only(top: mq.height * .025),
                     child: Material(
                       child: TextField(
                           keyboardType: TextInputType.name,
-                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
                           decoration: InputDecoration(
                               floatingLabelAlignment: FloatingLabelAlignment.start,
                               fillColor: Colors.white,
@@ -74,19 +77,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )),
                     )
                 ),
-                SizedBox(height: mq.height *.04),
+                // About Section
+                Container(
+                    width: mq.height *.40,
+                    margin: EdgeInsets.only(top: mq.height * .025),
+                    child: Material(
+                      child: TextField(
+                          keyboardType: TextInputType.name,
+                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                          decoration: InputDecoration(
+                              floatingLabelAlignment: FloatingLabelAlignment.start,
+                              fillColor: Colors.white,
+                              filled: true,
+                              labelText: "About",
+                              labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,fontSize:24)
+                          )),
+                    )
+                ),
+                SizedBox(height: mq.height *.015),
+
+                // Update Button
                 ElevatedButton(onPressed: (){},
                     child: Text("UPDATE",style: TextStyle(fontSize: 20,)),
                     style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(
                         255, 54, 59, 182)),
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25))),
-                      minimumSize: MaterialStatePropertyAll(Size(192, 59))
+                      minimumSize: MaterialStatePropertyAll(Size(140, 55))
 
                     )
                 ),
               ],
             ),
           ),
+
+
+          // Edit Button Of Profile Picture
           Positioned(
             top: mq.height * .30,
             left: mq.width * .59,
@@ -103,10 +128,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           //
           //     )
           // ),
+
+          // Log Out Button
           Padding(
             padding:  EdgeInsets.only(bottom: mq.height * .03,left: mq.height * .2),
             child: SizedBox(
-              height: mq.height * .075,
+              height: mq.height * .065,
               width: mq.width * .40,
               child: FloatingActionButton.extended(onPressed: (){},
                   icon: Icon(Icons.logout),
