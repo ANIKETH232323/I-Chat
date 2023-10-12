@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
-import 'package:i_chat/appBar/homeScreenAppBar.dart';
 import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/screens/profile_screen.dart';
 import 'package:i_chat/widgets/chat_user_card.dart';
@@ -130,7 +129,6 @@ class _HeaderSection extends StatelessWidget {
   const _HeaderSection();
   @override
   Widget build(BuildContext context) {
-    List<ChatUser>list = [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
