@@ -128,6 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ElevatedButton(onPressed: (){
                       if(_formKey.currentState!.validate()){
                         _formKey.currentState!.save();
+                        ApIs.changeNamAbout();
                         log('inside validation');
                       }
 

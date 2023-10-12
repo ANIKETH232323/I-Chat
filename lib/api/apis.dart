@@ -61,8 +61,9 @@ class ApIs{
   // for update name and about in firebase after changing in profile section
   static Future<void>changeNamAbout() async {
     await firestore.collection('user').doc(user.uid).update({
-
-    })
+      'name':me.name,
+      'about':me.about,
+    });
   }
 
 
