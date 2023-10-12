@@ -37,14 +37,17 @@ class _HomescreenState extends State<Homescreen> {
         bottom: false,
         child: Stack(
           children: [
-
             Column(
               children: [
-                IconButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (_)=>ProfileScreen(user: ApIs.me)));
-                },
-                  icon: new Image.asset("images/acc.png"),),
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  padding: EdgeInsets.only(left: mq.height * .045,top: mq.height * .045),
+                  child: IconButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (_)=>ProfileScreen(user: ApIs.me)));
+                  },
+                    icon: new Image.asset("images/acc.png"),),
+                ),
 
                 // CachedNetworkImage(
                 //   fit: BoxFit.cover,
@@ -54,11 +57,54 @@ class _HomescreenState extends State<Homescreen> {
                 //   // placeholder: (context, url) => CircularProgressIndicator(),
                 //   errorWidget: (context, url, error) => CircleAvatar(child: Icon(CupertinoIcons.person),backgroundColor: Colors.amberAccent),
                 // ),
-                SizedBox(height: mq.height * .09,),
+                SizedBox(height: mq.height * .015,),
                 searchBox(),
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Container(
+                    decoration: BoxDecoration(color: Colors.white,
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(25),topLeft: Radius.circular(25))
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: StreamBuilder(
+                        stream: ApIs.getAllUser(),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                          // if Data is loading
+                            case ConnectionState.waiting:
+                            case ConnectionState.none:
+                              return const Center(child: CircularProgressIndicator());
+                          // if some or all data is loaded then show it
+                            case ConnectionState.active:
+                            case ConnectionState.done:
+                              final data = snapshot.data?.docs;
+                              list = data
+                                  ?.map((e) => ChatUser.fromJson(e.data()))
+                                  .toList() ??
+                                  [];
+                          }
+                          if(list.isNotEmpty){
+                            return ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: list.length,
+                                itemBuilder: (context, index) {
+                                  return chat_user_card(user: list[index],);
+                                  // return Text('Name:${list[index]}');
+                                });
+                          }
+                          else{
+                            return Center(child: Text('No Connection Found',style: TextStyle(fontSize: 18),));
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                )
+
+
               ],
             )
-
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 18.0),
             //   child: Column(
@@ -68,46 +114,9 @@ class _HomescreenState extends State<Homescreen> {
             //     ],
             //   ),
             // ),
-            // Card(
-            //   margin: EdgeInsets.only(top: mq.height * .20),
-            //   shape: RoundedRectangleBorder(
-            //       borderRadius:
-            //           BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25))),
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(left: 8.0),
-            //     child: StreamBuilder(
-            //       stream: ApIs.getAllUser(),
-            //       builder: (context, snapshot) {
-            //         switch (snapshot.connectionState) {
-            //           // if Data is loading
-            //           case ConnectionState.waiting:
-            //           case ConnectionState.none:
-            //             return const Center(child: CircularProgressIndicator());
-            //           // if some or all data is loaded then show it
-            //           case ConnectionState.active:
-            //           case ConnectionState.done:
-            //             final data = snapshot.data?.docs;
-            //             list = data
-            //                     ?.map((e) => ChatUser.fromJson(e.data()))
-            //                     .toList() ??
-            //                 [];
-            //         }
-            //         if(list.isNotEmpty){
-            //           return ListView.builder(
-            //               physics: BouncingScrollPhysics(),
-            //               itemCount: list.length,
-            //               itemBuilder: (context, index) {
-            //                 return chat_user_card(user: list[index],);
-            //                 // return Text('Name:${list[index]}');
-            //               });
-            //         }
-            //         else{
-            //           return Center(child: Text('No Connection Found',style: TextStyle(fontSize: 18),));
-            //         }
-            //       },
-            //     ),
-            //   ),
-            // ),
+
+
+
 
           ],
         ),
@@ -125,10 +134,10 @@ class searchBox extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.all(35.0),
+      padding: EdgeInsets.all( mq.height * .019),
       child: Container(
         height: mq.height *.05,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           color: Colors.white60,
           borderRadius: BorderRadius.circular(25),
