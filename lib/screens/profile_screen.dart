@@ -135,13 +135,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Overlay.of(context),
 
                           CustomSnackBar.success(
+                            messagePadding: EdgeInsets.only(left: mq.height *.04),
                             message:
                             "Profile Updated Successfully",
                           icon: Transform.rotate(
                             angle: 12,
                             child: Padding(
-                              padding: EdgeInsets.all(mq.height *.025),
-                              child: Image(image: AssetImage('images/check.png'),height:mq.height *.15,width:mq.height *.06 ,),
+                              padding: EdgeInsets.all(mq.height *.02),
+                              child: Image(image: AssetImage('images/check.png'),height:mq.height *.3,),
                             ),
                           )),
                         );
