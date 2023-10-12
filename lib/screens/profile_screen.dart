@@ -140,8 +140,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon: Transform.rotate(
                             angle: 12,
                             child: Padding(
-                              padding: const EdgeInsets.all(18.0),
-                              child: Image(image: AssetImage('images/check.png'),width: 70,height: 70,alignment: Alignment(1, 140)),
+                              padding: EdgeInsets.all(mq.height *.019),
+                              child: Image(image: AssetImage('images/check.png'),height:mq.height *.15,),
                             ),
                           )),
                         );
