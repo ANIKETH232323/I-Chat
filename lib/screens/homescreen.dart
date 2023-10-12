@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
+import 'package:i_chat/main.dart';
 import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/screens/profile_screen.dart';
 import 'package:i_chat/widgets/chat_user_card.dart';
@@ -16,7 +17,6 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ApIs.userSelfInfo();
   }
@@ -30,10 +30,10 @@ class _HomescreenState extends State<Homescreen> {
         child: Stack(
           children: [
             Card(
-              margin: EdgeInsets.only(top: 158),
+              margin: EdgeInsets.only(top: mq.height * .19),
               shape: RoundedRectangleBorder(
                   borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(25))),
+                      BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25))),
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: StreamBuilder(
@@ -93,8 +93,8 @@ class searchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 55),
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      margin: EdgeInsets.only(top: mq.height * .07),
+      padding: EdgeInsets.symmetric(horizontal: mq.height * .025),
       decoration: BoxDecoration(
         color: Colors.white60,
         borderRadius: BorderRadius.circular(25),
@@ -130,7 +130,7 @@ class _HeaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
