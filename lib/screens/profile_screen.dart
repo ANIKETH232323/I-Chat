@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             angle: 12,
                             child: Padding(
                               padding: EdgeInsets.all(mq.height *.02),
-                              child: Image(image: AssetImage('images/check.png'),height:mq.height *.3,),
+                              child: Image(image: AssetImage('images/check.png'),height:mq.height *.34,),
                             ),
                           )),
                         );
