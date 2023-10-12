@@ -9,6 +9,8 @@ import 'package:i_chat/helper/dialoage.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/screens/auth/login_screen.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -129,6 +131,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       if(_formKey.currentState!.validate()){
                         _formKey.currentState!.save();
                         ApIs.changeNamAbout();
+                        showTopSnackBar(
+                          Overlay.of(context),
+
+                          CustomSnackBar.success(
+                            message:
+                            "Profile Updated Successfully",
+                          icon: Transform.rotate(
+                            angle: 12,
+                            child: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Image(image: AssetImage('images/check.png'),width: 70,height: 70,alignment: Alignment(1, 140)),
+                            ),
+                          )),
+                        );
                         log('inside validation');
                       }
 

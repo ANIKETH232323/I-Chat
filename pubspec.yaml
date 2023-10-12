@@ -28,6 +28,9 @@ dependencies:
   cached_network_image: ^3.3.0
   flutter_dotenv: ^5.1.0
 
+  # Snack bar custom
+  top_snackbar_flutter: ^3.1.0
+
 
 dev_dependencies:
   flutter_test:
