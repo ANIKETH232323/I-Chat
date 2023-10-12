@@ -31,7 +31,7 @@ class _HomescreenState extends State<Homescreen> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: StreamBuilder(
-                  stream: ApIs.firestore.collection('user').snapshots(),
+                  stream: ApIs.getAllUser(),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       // if Data is loading

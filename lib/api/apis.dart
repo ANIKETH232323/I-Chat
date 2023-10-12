@@ -37,4 +37,10 @@ class ApIs{
         .doc(user.uid)
         .set(chatUser.toJson());
   }
-  }
+
+    static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUser(){
+      return firestore.collection('user').where('id',isNotEqualTo: user.uid).snapshots();
+    }
+
+
+}
