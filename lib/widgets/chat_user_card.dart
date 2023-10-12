@@ -28,7 +28,7 @@ class _chatUser extends State<chat_user_card> {
           onTap: (){},
           child: ListTile(
             leading: ClipRRect(
-              borderRadius: BorderRadius.circular(1),
+              borderRadius: BorderRadius.circular(mq.height *.3),
               child: CachedNetworkImage(
                 width: mq.height *.055,
                 height: mq.height *.055,

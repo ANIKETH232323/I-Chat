@@ -16,6 +16,13 @@ class _HomescreenState extends State<Homescreen> {
   List<ChatUser> list = [];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ApIs.userSelfInfo();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 88, 45, 210),
@@ -130,7 +137,11 @@ class _HeaderSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (_)=>ProfileScreen()));}, icon: new Image.asset("images/acc.png"),)
+            IconButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (_)=>ProfileScreen(user: ApIs.me)));
+              },
+              icon: new Image.asset("images/acc.png"),)
             // Custom_Navigation_Button(
             //   icon: Icon(Icons.menu_rounded),
             // )

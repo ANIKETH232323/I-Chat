@@ -5,6 +5,9 @@ import 'package:i_chat/models/chatUse.dart';
 class ApIs{
   static FirebaseAuth auth = FirebaseAuth.instance;
 
+  // for storing self info
+  static late ChatUser me;
+
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   static User get user => auth.currentUser!;
@@ -13,6 +16,19 @@ class ApIs{
   static Future<bool>userExists() async {
     return (await firestore.collection('user').doc(user.uid).get())
         .exists;
+  }
+
+  // for checking User Self info
+  static Future<void>userSelfInfo() async {
+    return firestore.collection('user').doc(user.uid).
+    get().then((user) async {
+      if(user.exists){
+        me =ChatUser.fromJson(user.data()!);
+      }
+      else{
+        await createUser().then((value) => userSelfInfo());
+      }
+    });
   }
 
 

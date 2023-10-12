@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:i_chat/api/apis.dart';
@@ -9,8 +10,8 @@ import 'package:i_chat/screens/auth/login_screen.dart';
 
 
 class ProfileScreen extends StatefulWidget {
-  // final ChatUser user;
-  const ProfileScreen({super.key});
+  final ChatUser user;
+  const   ProfileScreen({super.key, required this.user});
 
 
 
@@ -36,30 +37,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(color: Colors.white,
                 borderRadius: BorderRadius.only(topLeft:Radius.circular(45),topRight: Radius.circular(45))),),
           Positioned(
-            top: mq.height * .2,
+            top: mq.height * .16,
             child: Column(
               children: [
-                Container(
-                  width: 144,
-                  height: 144,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(175),
-                    image: DecorationImage(image: AssetImage('images/man.png'),
-                        fit: BoxFit.cover),
-                  ),),
+
+                // Profile Picture
+                ClipRRect(
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    width: mq.height *.2,
+                    height: mq.height *.2,
+                    imageUrl: widget.user.image,
+                    // placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => CircleAvatar(child: Icon(CupertinoIcons.person),backgroundColor: Colors.amberAccent),
+                  ),
+                  borderRadius: BorderRadius.circular(mq.height *.2),
+                ),
                 SizedBox(height: mq.height * .02,),
                 // Edit Name
                 Container(
                   width: mq.height *.40,
                   // padding: EdgeInsets.only(top:mq.height * .1),
                   child: Material(
-                      child: TextField(style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                      child: TextFormField(
+                        initialValue: widget.user.name,
+                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                         keyboardType: TextInputType.name,
                         decoration: InputDecoration(
                           floatingLabelAlignment: FloatingLabelAlignment.start,
                           fillColor: Colors.white,
                           filled: true,
                           labelText: "Name",
+
                           labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,fontSize:24)
                       )),
                 )
@@ -69,7 +78,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: mq.height *.40,
                     margin: EdgeInsets.only(top: mq.height * .025),
                     child: Material(
-                      child: TextField(
+                      child: TextFormField(
+                        initialValue: widget.user.email,
                           keyboardType: TextInputType.name,
                           style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
                           decoration: InputDecoration(
@@ -86,7 +96,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: mq.height *.40,
                     margin: EdgeInsets.only(top: mq.height * .025),
                     child: Material(
-                      child: TextField(
+                      child: TextFormField(
+                        initialValue: widget.user.about,
                           keyboardType: TextInputType.name,
                           style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
                           decoration: InputDecoration(
@@ -99,6 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     )
                 ),
                 SizedBox(height: mq.height *.015),
+
 
                 // Update Button
                 ElevatedButton(onPressed: (){},
