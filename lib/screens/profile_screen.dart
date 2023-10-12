@@ -140,12 +140,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon: Transform.rotate(
                             angle: 12,
                             child: Padding(
-                              padding: EdgeInsets.all(mq.height *.019),
-                              child: Image(image: AssetImage('images/check.png'),height:mq.height *.15,),
+                              padding: EdgeInsets.all(mq.height *.025),
+                              child: Image(image: AssetImage('images/check.png'),height:mq.height *.15,width:mq.height *.06 ,),
                             ),
                           )),
                         );
-                        log('inside validation');
                       }
 
                     },
