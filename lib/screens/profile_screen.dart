@@ -207,14 +207,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-
-//user profile picture
-// Expanded(
-//   child: ClipRRect(
-//     borderRadius: BorderRadius.circular(10),
-//     child: CachedNetworkImage(
-//         imageUrl: widget.user.image,
-//     errorWidget: (context, url, error) => const CircleAvatar(child: Icon(Icons.person),),),
-//   ),
-// )
