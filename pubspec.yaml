@@ -31,6 +31,9 @@ dependencies:
   # Snack bar custom
   top_snackbar_flutter: ^3.1.0
 
+  # image Picker
+  image_picker: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:

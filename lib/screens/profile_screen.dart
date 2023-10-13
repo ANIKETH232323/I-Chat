@@ -1,4 +1,7 @@
 
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,7 @@ import 'package:i_chat/helper/dialoage.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/screens/auth/login_screen.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -24,6 +28,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey =  GlobalKey<FormState>();
+  String? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +52,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 top: mq.height * .16,
                 child: Column(
                   children: [
-
-                    // Profile Picture
+                    _image != null ?
+                        // for selecting local image
+                    ClipRRect(
+                      child: Image.file(
+                        File(_image!),
+                        fit: BoxFit.cover,
+                        width: mq.height *.2,
+                        height: mq.height *.2,
+                      ),
+                      borderRadius: BorderRadius.circular(mq.height *.2),
+                    ) :
+                    // Profile Picture from defult gmail image
                     ClipRRect(
                       child: CachedNetworkImage(
                         fit: BoxFit.cover,
@@ -223,17 +238,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Text("Pick Profile Picture",
             style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,),textAlign: TextAlign.center,),
-          SizedBox(height: mq.height * .07,),
+          SizedBox(height: mq.height * .07  ,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+
+              // From gallary
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 shape: CircleBorder(),
                 fixedSize: Size(mq.width * .24, mq.height * .1)
               ),
-                onPressed: (){},
+                onPressed: () async {
+                  final ImagePicker picker = ImagePicker();
+                  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                  if(image != null){
+
+                    log('Image Path: ${image.path} -- Mime Type: ${image.mimeType}');
+                  }
+                  Navigator.pop(context);
+                },
                 child: Image.asset("images/add_image.png")),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -241,7 +267,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 shape: CircleBorder(),
                 fixedSize: Size(mq.width * .24, mq.height * .1)
               ),
-                onPressed: (){},
+                onPressed: () async {
+                    final ImagePicker picker = ImagePicker();
+                    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+                    if(image != null){
+                      setState(() {
+                        _image = image.path;
+                      });
+                        log('Image Path: ${image.path} -- Mime Type: ${image.mimeType}');
+                    }
+                    Navigator.pop(context);
+                },
                 child: Image.asset("images/camera_add.png"))
           ],)
         ],
