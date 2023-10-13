@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/main.dart';
@@ -13,7 +14,13 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  List<ChatUser> list = [];
+  List<ChatUser> _list = [];
+
+  // for storing search items
+  final List<ChatUser> _searchList = [];
+
+  // for storing search status
+  bool _isSearchOn = false;
 
   @override
   void initState() {
@@ -57,7 +64,58 @@ class _HomescreenState extends State<Homescreen> {
                 SizedBox(
                   height: mq.height * .015,
                 ),
-                searchBox(),
+                Padding(
+                  padding: EdgeInsets.all(mq.height * .019),
+                  child: Container(
+                  height: mq.height * .05,
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                  color: Colors.white60,
+                  borderRadius: BorderRadius.circular(25),
+                  ),
+                    child: Column(
+                      children: [
+                       Row(
+                        children: [
+                            Flexible(
+                                child: SizedBox(
+                                height: mq.height * .05,
+                                  child: TextField(
+                                    onTap: () {
+                                      setState(() {
+                                        _isSearchOn = !_isSearchOn;
+                                      });
+                                    },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(bottom: 5),
+                                    hintText: "Search Message Here",
+                                    border: InputBorder.none,
+                                ),
+                                    // when search  text changes it will update the search list
+                                    onChanged: (value) {
+                                      _searchList.clear();
+                                      for(var i in _list){
+                                        if(i.name.toLowerCase().contains(value.toLowerCase()) ||
+                                            i.name.toUpperCase().contains(value.toUpperCase())){
+                                          _searchList.add(i);
+                                        }
+                                        setState(() {
+                                          _searchList;
+                                        });
+                                      }
+                                    },
+                                ),
+                                )),
+                            Icon( _isSearchOn ?
+                            CupertinoIcons.clear_circled_solid:
+                            Icons.search,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
                 Flexible(
                   fit: FlexFit.tight,
                   child: Container(
@@ -81,18 +139,18 @@ class _HomescreenState extends State<Homescreen> {
                             case ConnectionState.active:
                             case ConnectionState.done:
                               final data = snapshot.data?.docs;
-                              list = data
+                              _list = data
                                       ?.map((e) => ChatUser.fromJson(e.data()))
                                       .toList() ??
                                   [];
                           }
-                          if (list.isNotEmpty) {
+                          if (_list.isNotEmpty) {
                             return ListView.builder(
                                 physics: BouncingScrollPhysics(),
-                                itemCount: list.length,
+                                itemCount: _isSearchOn ? _searchList.length : _list.length,
                                 itemBuilder: (context, index) {
                                   return chat_user_card(
-                                    user: list[index],
+                                    user:_isSearchOn? _searchList[index] : _list[index],
                                   );
                                   // return Text('Name:${list[index]}');
                                 });
@@ -126,46 +184,14 @@ class _HomescreenState extends State<Homescreen> {
   }
 }
 
-class searchBox extends StatelessWidget {
-  const searchBox({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(mq.height * .019),
-      child: Container(
-        height: mq.height * .05,
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          color: Colors.white60,
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Flexible(
-                    child: SizedBox(
-                  height: mq.height * .05,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 5),
-                      hintText: "Search Message Here",
-                      border: InputBorder.none,
-                    ),
-                  ),
-                )),
-                Icon(
-                  Icons.search,
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class searchBox extends StatelessWidget {
+//   const searchBox({
+//     super.key,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//   }
+// }
 
