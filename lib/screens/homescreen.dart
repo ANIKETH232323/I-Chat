@@ -53,14 +53,6 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                 ),
 
-                // CachedNetworkImage(
-                //   fit: BoxFit.cover,
-                //   width: mq.height *.02,
-                //   height: mq.height *.01,
-                //   imageUrl: widget.chatUser.image,
-                //   // placeholder: (context, url) => CircularProgressIndicator(),
-                //   errorWidget: (context, url, error) => CircleAvatar(child: Icon(CupertinoIcons.person),backgroundColor: Colors.amberAccent),
-                // ),
                 SizedBox(
                   height: mq.height * .015,
                 ),
@@ -168,15 +160,6 @@ class _HomescreenState extends State<Homescreen> {
                 )
               ],
             )
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            //   child: Column(
-            //     children: [
-            //       _HeaderSection(),
-            //       searchBox(),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -184,14 +167,4 @@ class _HomescreenState extends State<Homescreen> {
   }
 }
 
-// class searchBox extends StatelessWidget {
-//   const searchBox({
-//     super.key,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
 
