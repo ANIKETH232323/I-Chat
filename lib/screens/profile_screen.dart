@@ -164,7 +164,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Positioned(
                 top: mq.height * .30,
                 left: mq.width * .59,
-                child: FloatingActionButton(onPressed: () {},
+                child: FloatingActionButton(onPressed: () {
+
+                  _showBottomSheet();
+                },
                     child:Icon(Icons.edit,color: Colors.black,),
                     backgroundColor: Color.fromARGB(255, 217, 217, 217)),
               ),
@@ -206,4 +209,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  void _showBottomSheet(){
+    showModalBottomSheet(context: context,
+        showDragHandle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(25),
+                topRight: Radius.circular(25))),
+        builder: (_){
+      return ListView(
+        shrinkWrap: true,
+        padding: EdgeInsets.only(top: mq.height * .015, bottom: mq.height * .1),
+        children: [
+          Text("Pick Profile Picture",
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,),textAlign: TextAlign.center,),
+          SizedBox(height: mq.height * .07,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: CircleBorder(),
+                fixedSize: Size(mq.width * .24, mq.height * .1)
+              ),
+                onPressed: (){},
+                child: Image.asset("images/add_image.png")),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: CircleBorder(),
+                fixedSize: Size(mq.width * .24, mq.height * .1)
+              ),
+                onPressed: (){},
+                child: Image.asset("images/camera_add.png"))
+          ],)
+        ],
+      );
+    });
+  }
+
+
 }
