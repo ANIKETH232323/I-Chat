@@ -73,10 +73,56 @@ class _ChatScreenState extends State<ChatScreen>{
                     icon: Icon(Icons.videocam_sharp,color: Colors.white)),
               ],
             ),
+            Column(children: [
+              _chatInput(),
 
+            ],)
           ],
+
         ),
+
       ),
+    );
+
+  }
+  Widget _chatInput(){
+    return Row(
+      children: [
+        Expanded(
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            child: Row(children: [
+
+              // emoji Button
+              IconButton(onPressed: (){}, icon: Icon(Icons.emoji_emotions_rounded,size: 20),),
+
+              Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                        hintText: "Message",
+                        hintStyle: TextStyle(fontWeight: FontWeight.bold),
+                        border: InputBorder.none
+                    ),
+                  )),
+
+              // Pick Up
+              IconButton(onPressed: (){}, icon: Icon(Icons.image,size: 20,)),
+
+              // Camera Button
+              IconButton(onPressed: (){}, icon: Icon(Icons.camera_alt,size: 20,)),
+
+              //
+
+
+            ],),
+          ),
+        ),
+        Expanded(
+
+          child: MaterialButton(onPressed: (){},
+            child: ImageIcon(AssetImage('images/send.png')),),
+        ),
+      ],
     );
   }
 }
