@@ -38,7 +38,7 @@ class _ChatScreenState extends State<ChatScreen>{
             ),
             Row(
               children: [
-                SizedBox(height: 145,width: 5,),
+                SizedBox(height: mq.height * .15,width: mq.width * .02,),
                 IconButton(onPressed: () =>Navigator.pop(context),iconSize: 35,
                     // padding: EdgeInsets.only(top: 45,left: 5),
                     icon: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.white)),
@@ -53,20 +53,20 @@ class _ChatScreenState extends State<ChatScreen>{
                   ),
                   borderRadius: BorderRadius.circular(mq.height *.2),
                 ),
-                SizedBox(width: 20,),
+                SizedBox(width: mq.width * .035,),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // User Name
                     Text(widget.user.name,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500,color: Colors.white)),
-                    SizedBox(height: 5),
+                    SizedBox(height: mq.height * .005),
 
                     // Last seen
                     Text('Online',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: Colors.white)),
                   ],),
 
-                SizedBox(width: 85,),
+                SizedBox(width: mq.height * .1,),
                 IconButton(onPressed: () {},
                     iconSize: 28,
                     icon: Icon(Icons.call_sharp,color: Colors.white)),
