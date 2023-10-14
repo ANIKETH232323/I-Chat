@@ -33,6 +33,8 @@ class _ChatScreenState extends State<ChatScreen>{
               )
               ),
             ),
+
+            // Status Bar or CALL OR VIDEO BAR
             Row(
               children: [
                 SizedBox(height: mq.height * .15,width: mq.width * .02,),
@@ -73,8 +75,53 @@ class _ChatScreenState extends State<ChatScreen>{
                     icon: Icon(Icons.videocam_sharp,color: Colors.white)),
               ],
             ),
+
+            //CHATS AND SENDING BUTTONS
+
             Column(children: [
-              _chatInput(),
+              SizedBox(height: 125,),
+              Expanded(
+                child: StreamBuilder(
+                  // stream: ApIs.getAllUser(),
+                  stream: null,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                    // if Data is loading
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
+                        // return const Center(
+                        //     child: CircularProgressIndicator());
+                    // if some or all data is loaded then show it
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        // final data = snapshot.data?.docs;
+                        // _list = data
+                        //     ?.map((e) => ChatUser.fromJson(e.data()))
+                        //     .toList() ??
+                        //     [];
+                        final _list = [];
+                        if (_list.isNotEmpty) {
+                          return ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              itemCount:_list.length,
+                              itemBuilder: (context, index) {
+                                return Text('Message:${_list[index]}');
+                              });
+                        } else {
+                          return Center(
+                              child: Text(
+                                'Say Hii! 👋',
+                                style: TextStyle(fontSize: 25),
+                              ));
+                        }
+                    }
+                  },
+                ),
+              ),
+
+              SizedBox(
+                height: 90,
+                  child: Expanded(child: _chatInput())),
 
             ],)
           ],

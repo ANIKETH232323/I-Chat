@@ -149,7 +149,7 @@ class _HomescreenState extends State<Homescreen> {
                                           ?.map((e) => ChatUser.fromJson(e.data()))
                                           .toList() ??
                                       [];
-                              }
+
                               if (_list.isNotEmpty) {
                                 return ListView.builder(
                                     physics: BouncingScrollPhysics(),
@@ -163,9 +163,10 @@ class _HomescreenState extends State<Homescreen> {
                               } else {
                                 return Center(
                                     child: Text(
-                                  'No Connection Found',
-                                  style: TextStyle(fontSize: 18),
-                                ));
+                                      'No Connection Found',
+                                      style: TextStyle(fontSize: 18),
+                                    ));
+                              }
                               }
                             },
                           ),
