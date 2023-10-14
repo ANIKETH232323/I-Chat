@@ -118,7 +118,6 @@ class _ChatScreenState extends State<ChatScreen>{
           ),
         ),
         Expanded(
-
           child: MaterialButton(onPressed: (){},
             child: ImageIcon(AssetImage('images/send.png')),),
         ),
