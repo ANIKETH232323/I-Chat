@@ -1,10 +1,13 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/models/chatUse.dart';
 
-class ApIs{
+class ApIs {
   static FirebaseAuth auth = FirebaseAuth.instance;
   static FirebaseStorage storage = FirebaseStorage.instance;
 
@@ -16,26 +19,20 @@ class ApIs{
   static User get user => auth.currentUser!;
 
   // for checking User exits or not
-  static Future<bool>userExists() async {
-    return (await firestore.collection('user').doc(user.uid).get())
-        .exists;
+  static Future<bool> userExists() async {
+    return (await firestore.collection('user').doc(user.uid).get()).exists;
   }
 
   // for checking User Self info
-  static Future<void>userSelfInfo() async {
-    return firestore.collection('user').doc(user.uid).
-    get().then((user) async {
-      if(user.exists){
-        me =ChatUser.fromJson(user.data()!);
-      }
-      else{
+  static Future<void> userSelfInfo() async {
+    return firestore.collection('user').doc(user.uid).get().then((user) async {
+      if (user.exists) {
+        me = ChatUser.fromJson(user.data()!);
+      } else {
         await createUser().then((value) => userSelfInfo());
       }
     });
   }
-
-
-
 
   // for creating new User
 
@@ -59,17 +56,33 @@ class ApIs{
         .set(chatUser.toJson());
   }
 
-    static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUser(){
-      return firestore.collection('user').where('id',isNotEqualTo: user.uid).snapshots();
-    }
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUser() {
+    return firestore
+        .collection('user')
+        .where('id', isNotEqualTo: user.uid)
+        .snapshots();
+  }
 
   // for update name and about in firebase after changing in profile section
-  static Future<void>changeNamAbout() async {
+  static Future<void> changeNamAbout() async {
     await firestore.collection('user').doc(user.uid).update({
-      'name':me.name,
-      'about':me.about,
+      'name': me.name,
+      'about': me.about,
     });
   }
 
+  // Update Profile Picture
+  static Future<void> updateProfilePicture(File file) async {
+    final ext = file.path.split('.').last;
+    final ref = storage.ref().child('profile_picture/${user.uid}.$ext');
+    await ref
+        .putFile(file, SettableMetadata(contentType: 'images/$ext'))
+        .then((p0) {
+      log('Data Transfered: ${p0.bytesTransferred / 1000} kb');
+    });
 
+    // updating image in firestore database
+    me.image = await ref.getDownloadURL();
+    await firestore.collection('user').doc(user.uid).update({'image': me.name});
+  }
 }

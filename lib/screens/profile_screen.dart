@@ -238,8 +238,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   final ImagePicker picker = ImagePicker();
                   final XFile? image = await picker.pickImage(source: ImageSource.gallery);
                   if(image != null){
-
-                    log('Image Path: ${image.path} -- Mime Type: ${image.mimeType}');
+                    setState(() {
+                      _image = image.path;
+                    });
+                    ApIs.updateProfilePicture(File(_image!));
+                    // log('Image Path: ${image.path} -- Mime Type: ${image.mimeType}');
                   }
                   Navigator.pop(context);
                 },
@@ -257,7 +260,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       setState(() {
                         _image = image.path;
                       });
-                        log('Image Path: ${image.path} -- Mime Type: ${image.mimeType}');
+                      ApIs.updateProfilePicture(File(_image!));
+                      Dialogs.showSnackBarPictureUpdateSuccessful(context, 'Profile Picture Updated Successfully');
+                        // log('Image Path: ${image.path} -- Mime Type: ${image.mimeType}');
                     }
                     Navigator.pop(context);
                 },

@@ -34,6 +34,13 @@ class Dialogs{
           )),
     );
   }
+  static void showSnackBarPictureUpdateSuccessful(BuildContext context,String msg){
+    showTopSnackBar(
+      Overlay.of(context),
+
+      CustomSnackBar.success(message:msg),
+    );
+  }
 
 
   static void showProgressBar(BuildContext context){
