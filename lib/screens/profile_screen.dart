@@ -145,23 +145,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       if(_formKey.currentState!.validate()){
                         _formKey.currentState!.save();
                         ApIs.changeNamAbout();
-                        showTopSnackBar(
-                          Overlay.of(context),
-
-                          CustomSnackBar.success(
-                            messagePadding: EdgeInsets.only(left: mq.height *.04),
-                            message:
-                            "Profile Updated Successfully",
-                          icon: Transform.rotate(
-                            angle: 12,
-                            child: Padding(
-                              padding: EdgeInsets.all(mq.height *.02),
-                              child: Image(image: AssetImage('images/check.png'),height:mq.height *.34,),
-                            ),
-                          )),
-                        );
+                        Dialogs.showSnackBarForProfileScreen(context, 'Details Updated Successfully');
                       }
-
                     },
                         child: Text("UPDATE",style: TextStyle(fontSize: 20,)),
                         style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(

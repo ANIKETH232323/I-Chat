@@ -68,9 +68,10 @@ class _LoginscreenState extends State<Loginscreen> {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-
+      Dialogs.showSnackBarSuccessful(context, 'SuccessFul');
       // Once signed in, return the UserCredential
       return await ApIs.auth.signInWithCredential(credential);
+
     }
     catch(e){
       // log(' \n_signInWithGoogle: $e' as num);
