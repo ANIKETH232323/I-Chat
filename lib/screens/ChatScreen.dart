@@ -71,11 +71,6 @@ class _ChatScreenState extends State<ChatScreen>{
                 IconButton(onPressed: () {},
                     iconSize: 28,
                     icon: Icon(Icons.videocam_sharp,color: Colors.white)),
-
-
-
-
-
               ],
             ),
 
