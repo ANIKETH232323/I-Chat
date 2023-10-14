@@ -20,7 +20,6 @@ class _LoginscreenState extends State<Loginscreen> {
   bool _isAnimate = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(milliseconds: 100),(){
       setState(() {

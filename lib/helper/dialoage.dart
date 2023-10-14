@@ -8,9 +8,7 @@ class Dialogs{
     showTopSnackBar(
       Overlay.of(context),
 
-      CustomSnackBar.error(
-          messagePadding: EdgeInsets.only(left: mq.height *.04),
-          message:msg),
+      CustomSnackBar.error(message:msg),
     );
   }
 
