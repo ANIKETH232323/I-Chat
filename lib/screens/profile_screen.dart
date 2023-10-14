@@ -12,8 +12,6 @@ import 'package:i_chat/main.dart';
 import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/screens/auth/login_screen.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -228,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
 
-              // From gallary
+              // From gallery
 
             ElevatedButton(
               style: ElevatedButton.styleFrom(
