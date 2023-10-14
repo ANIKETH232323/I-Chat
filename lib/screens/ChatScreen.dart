@@ -86,42 +86,50 @@ class _ChatScreenState extends State<ChatScreen>{
 
   }
   Widget _chatInput(){
-    return Row(
-      children: [
-        Expanded(
-          child: Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            child: Row(children: [
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              child: Row(children: [
 
-              // emoji Button
-              IconButton(onPressed: (){}, icon: Icon(Icons.emoji_emotions_rounded,size: 20),),
+                // emoji Button
+                IconButton(onPressed: (){}, icon: Icon(Icons.emoji_emotions_rounded,size: 20,),),
 
-              Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                        hintText: "Message",
-                        hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                        border: InputBorder.none
-                    ),
-                  )),
+                Expanded(
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                          hintText: "Message",
+                          hintStyle: TextStyle(fontWeight: FontWeight.bold),
+                          border: InputBorder.none
+                      ),
+                    )),
 
-              // Pick Up
-              IconButton(onPressed: (){}, icon: Icon(Icons.image,size: 20,)),
+                // Pick Up
+                IconButton(onPressed: (){}, icon: Icon(Icons.image,size: 20,)),
 
-              // Camera Button
-              IconButton(onPressed: (){}, icon: Icon(Icons.camera_alt,size: 20,)),
-
-              //
-
-
-            ],),
+                // Camera Button
+                IconButton(onPressed: (){}, icon: Icon(Icons.camera_alt,size: 20,)),
+              ],),
+            ),
           ),
-        ),
-        Expanded(
-          child: MaterialButton(onPressed: (){},
-            child: ImageIcon(AssetImage('images/send.png')),),
-        ),
-      ],
+          SizedBox(height: 500,),
+          MaterialButton(onPressed: (){},
+            shape: CircleBorder(),
+              minWidth: 0,
+              padding: EdgeInsets.only(left: 15,top: 10,bottom: 10,right: 10),
+              color: Color.fromARGB(255, 10, 10, 115),
+            child: Transform.rotate(
+              angle: -.8,
+              child: Icon(Icons.send_rounded,size: 35,
+                color:Colors.white),
+            )),
+        ],
+      ),
     );
   }
 }
