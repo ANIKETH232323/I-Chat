@@ -3,11 +3,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/chatUse.dart';
-import 'package:i_chat/screens/profile_screen.dart';
 
 
 class ChatScreen extends StatefulWidget{
@@ -25,7 +22,7 @@ class _ChatScreenState extends State<ChatScreen>{
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 88, 45, 210),
+        backgroundColor: Color.fromARGB(255, 88, 45, 209),
         body: Stack(
           children: [
             Container(
@@ -66,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen>{
                     Text('Online',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: Colors.white)),
                   ],),
 
-                SizedBox(width: mq.height * .1,),
+                SizedBox(width: mq.height * .09,),
                 IconButton(onPressed: () {},
                     iconSize: 28,
                     icon: Icon(Icons.call_sharp,color: Colors.white)),

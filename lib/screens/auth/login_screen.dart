@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +67,7 @@ class _LoginscreenState extends State<Loginscreen> {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      Dialogs.showSnackBarSuccessful(context, 'SuccessFul');
+      Dialogs.showSnackBarSuccessful(context, 'Successful');
       // Once signed in, return the UserCredential
       return await ApIs.auth.signInWithCredential(credential);
 
