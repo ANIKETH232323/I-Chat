@@ -109,7 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Expanded(
                   child: StreamBuilder(
-                    stream: ApIs.getAllMessages(),
+                    stream: ApIs.getAllMessages(widget.user),
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
                         // if Data is loading
@@ -121,26 +121,12 @@ class _ChatScreenState extends State<ChatScreen> {
                         case ConnectionState.active:
                         case ConnectionState.done:
                           final data = snapshot.data?.docs;
-                          log("Data: ${jsonEncode(data![0].data())}");
-                          // _list = data
-                          //     ?.map((e) => ChatUser.fromJson(e.data()))
-                          //     .toList() ??
-                          //     [];
-                          _list.clear();
-                          _list.add(Message(
-                              msg: "Hii",
-                              formId: ApIs.user.uid,
-                              read: "",
-                              told: "XYZ",
-                              type: Type.text,
-                              sent: "12.00 AM  "));
-                          _list.add(Message(
-                              msg: "Hello",
-                              formId: "123",
-                              read: "xya",
-                              told: ApIs.user.uid,
-                              type: Type.text,
-                              sent: "12.05 AM  "));
+
+                          _list = data
+                              ?.map((e) => Message.fromJson(e.data()))
+                              .toList() ??
+                              [];
+
                           if (_list.isNotEmpty) {
                             return ListView.builder(
                                 physics: BouncingScrollPhysics(),
