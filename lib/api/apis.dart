@@ -56,6 +56,9 @@ class ApIs {
         .set(chatUser.toJson());
   }
 
+
+  // for getting all user  from firestore database
+
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUser() {
     return firestore
         .collection('user')
@@ -85,4 +88,16 @@ class ApIs {
     me.image = await ref.getDownloadURL();
     await firestore.collection('user').doc(user.uid).update({'image': me.name});
   }
+
+
+  /// ****************  CHAT SCREEN RELATED APIS *********************
+
+  // FOR GETTING ALL USER FROM FIRESTORE DATABASE
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages() {
+    return firestore
+        .collection('messages')
+        .snapshots();
+  }
+
+
 }
