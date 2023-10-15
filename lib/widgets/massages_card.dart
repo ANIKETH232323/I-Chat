@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
-import 'package:i_chat/main.dart';
 import 'package:i_chat/models/Message.dart';
 
 class MessageCard extends StatefulWidget{
