@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:developer';
 
@@ -8,19 +6,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/main.dart';
+import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
+import 'package:i_chat/widgets/massages_card.dart';
 
-
-class ChatScreen extends StatefulWidget{
+class ChatScreen extends StatefulWidget {
   final ChatUser user;
   const ChatScreen({super.key, required this.user});
-
 
   @override
   State<StatefulWidget> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen>{
+class _ChatScreenState extends State<ChatScreen> {
+  List<Message> _list = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,157 +30,211 @@ class _ChatScreenState extends State<ChatScreen>{
           children: [
             Container(
               margin: EdgeInsets.only(top: mq.height * .15),
-              decoration: BoxDecoration(color: Colors.white,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(38),
-              topLeft: Radius.circular(38)
-              )
-              ),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(38),
+                      topLeft: Radius.circular(38))),
             ),
 
             // Status Bar or CALL OR VIDEO BAR
             Row(
               children: [
-                SizedBox(height: mq.height * .15,width: mq.width * .02,),
-                IconButton(onPressed: () =>Navigator.pop(context),iconSize: 35,
+                SizedBox(
+                  height: mq.height * .15,
+                  width: mq.width * .02,
+                ),
+                IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    iconSize: 35,
                     // padding: EdgeInsets.only(top: 45,left: 5),
-                    icon: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.white)),
+                    icon: Icon(Icons.arrow_back_ios_new_outlined,
+                        color: Colors.white)),
                 ClipRRect(
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    width: mq.height *.05,
-                    height: mq.height *.05,
+                    width: mq.height * .05,
+                    height: mq.height * .05,
                     imageUrl: widget.user.image,
                     // placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => CircleAvatar(child: Icon(CupertinoIcons.person),backgroundColor: Colors.amberAccent),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                        child: Icon(CupertinoIcons.person),
+                        backgroundColor: Colors.amberAccent),
                   ),
-                  borderRadius: BorderRadius.circular(mq.height *.2),
+                  borderRadius: BorderRadius.circular(mq.height * .2),
                 ),
-                SizedBox(width: mq.width * .035,),
+                SizedBox(
+                  width: mq.width * .035,
+                ),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // User Name
-                    Text(widget.user.name,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500,color: Colors.white)),
+                    Text(widget.user.name,
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white)),
                     SizedBox(height: mq.height * .005),
 
                     // Last seen
-                    Text('Online',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500,color: Colors.white)),
-                  ],),
-
-                SizedBox(width: mq.height * .09,),
-                IconButton(onPressed: () {},
+                    Text('Online',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white)),
+                  ],
+                ),
+                SizedBox(
+                  width: mq.height * .09,
+                ),
+                IconButton(
+                    onPressed: () {},
                     iconSize: 28,
-                    icon: Icon(Icons.call_sharp,color: Colors.white)),
-
-                IconButton(onPressed: () {},
+                    icon: Icon(Icons.call_sharp, color: Colors.white)),
+                IconButton(
+                    onPressed: () {},
                     iconSize: 28,
-                    icon: Icon(Icons.videocam_sharp,color: Colors.white)),
+                    icon: Icon(Icons.videocam_sharp, color: Colors.white)),
               ],
             ),
 
             //CHATS AND SENDING BUTTONS
 
-            Column(children: [
-              SizedBox(height: 125,),
-              Expanded(
-                child: StreamBuilder(
-                  stream: ApIs.getAllMessages(),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                    // if Data is loading
-                      case ConnectionState.waiting:
-                      case ConnectionState.none:
-                        return const Center(child: CircularProgressIndicator());
-                    // if some or all data is loaded then show it
-                      case ConnectionState.active:
-                      case ConnectionState.done:
-                        final data = snapshot.data?.docs;
-                        log("Data: ${jsonEncode(data![0].data())}");
-                        // _list = data
-                        //     ?.map((e) => ChatUser.fromJson(e.data()))
-                        //     .toList() ??
-                        //     [];
-                        final _list = [];
-                        if (_list.isNotEmpty) {
-                          return ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              itemCount:_list.length,
-                              itemBuilder: (context, index) {
-                                return Text('Message:${_list[index]}');
-                              });
-                        } else {
-                          return Center(
-                              child: Text(
-                                'Say Hii! 👋',
-                                style: TextStyle(fontSize: 25),
-                              ));
-                        }
-                    }
-                  },
+            Column(
+              children: [
+                SizedBox(
+                  height: 125,
                 ),
-              ),
-
-              SizedBox(
-                height: 90,
-                  child: Expanded(child: _chatInput())),
-
-            ],)
+                Expanded(
+                  child: StreamBuilder(
+                    stream: ApIs.getAllMessages(),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        // if Data is loading
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        // if some or all data is loaded then show it
+                        case ConnectionState.active:
+                        case ConnectionState.done:
+                          final data = snapshot.data?.docs;
+                          log("Data: ${jsonEncode(data![0].data())}");
+                          // _list = data
+                          //     ?.map((e) => ChatUser.fromJson(e.data()))
+                          //     .toList() ??
+                          //     [];
+                          _list.clear();
+                          _list.add(Message(
+                              msg: "Hii",
+                              formId: ApIs.user.uid,
+                              read: "",
+                              told: "XYZ",
+                              type: Type.text,
+                              sent: "12.00 AM  "));
+                          _list.add(Message(
+                              msg: "Hello",
+                              formId: "123",
+                              read: "xya",
+                              told: ApIs.user.uid,
+                              type: Type.text,
+                              sent: "12.05 AM  "));
+                          if (_list.isNotEmpty) {
+                            return ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: _list.length,
+                                itemBuilder: (context, index) {
+                                  return MessageCard(
+                                    message: _list[index],
+                                  );
+                                });
+                          } else {
+                            return Center(
+                                child: Text(
+                              'Say Hii! 👋',
+                              style: TextStyle(fontSize: 25),
+                            ));
+                          }
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(height: 90, child: Expanded(child: _chatInput())),
+              ],
+            )
           ],
-
         ),
-
       ),
     );
-
   }
-  Widget _chatInput(){
+
+  Widget _chatInput() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
           Expanded(
             child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              child: Row(children: [
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+              child: Row(
+                children: [
+                  // emoji Button
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.emoji_emotions_rounded,
+                      size: 20,
+                    ),
+                  ),
 
-                // emoji Button
-                IconButton(onPressed: (){}, icon: Icon(Icons.emoji_emotions_rounded,size: 20,),),
+                  Expanded(
+                      child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                        hintText: "Message",
+                        hintStyle: TextStyle(fontWeight: FontWeight.bold),
+                        border: InputBorder.none),
+                  )),
 
-                Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                          hintText: "Message",
-                          hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                          border: InputBorder.none
-                      ),
-                    )),
+                  // Pick Up
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.image,
+                        size: 20,
+                      )),
 
-                // Pick Up
-                IconButton(onPressed: (){}, icon: Icon(Icons.image,size: 20,)),
-
-                // Camera Button
-                IconButton(onPressed: (){}, icon: Icon(Icons.camera_alt,size: 20,)),
-              ],),
+                  // Camera Button
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.camera_alt,
+                        size: 20,
+                      )),
+                ],
+              ),
             ),
           ),
-          SizedBox(height: 500,),
-          MaterialButton(onPressed: (){},
-            shape: CircleBorder(),
+          SizedBox(
+            height: 500,
+          ),
+          MaterialButton(
+              onPressed: () {},
+              shape: CircleBorder(),
               minWidth: 0,
-              padding: EdgeInsets.only(left: 15,top: 10,bottom: 10,right: 10),
+              padding:
+                  EdgeInsets.only(left: 15, top: 10, bottom: 10, right: 10),
               color: Color.fromARGB(255, 10, 10, 115),
-            child: Transform.rotate(
-              angle: -.8,
-              child: Icon(Icons.send_rounded,size: 35,
-                color:Colors.white),
-            )),
+              child: Transform.rotate(
+                angle: -.8,
+                child: Icon(Icons.send_rounded, size: 35, color: Colors.white),
+              )),
         ],
       ),
     );
   }
 }
-
-
