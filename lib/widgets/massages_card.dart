@@ -39,7 +39,7 @@ class _MessageCardState extends State<MessageCard> {
                   color: Color.fromARGB(255, 197, 197, 195),
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),bottomRight: Radius.circular(30),)
               ),
-              child: Text(widget.message.msg+" How are You doing?",
+              child: Text(widget.message.msg,
 
                 style:TextStyle(color: Color.fromARGB(255, 67, 56, 56),
                   fontSize: 15,

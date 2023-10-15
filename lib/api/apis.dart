@@ -57,7 +57,6 @@ class ApIs {
         .set(chatUser.toJson());
   }
 
-
   // for getting all user  from firestore database
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUser() {
@@ -90,35 +89,40 @@ class ApIs {
     await firestore.collection('user').doc(user.uid).update({'image': me.name});
   }
 
-
   /// ****************  CHAT SCREEN RELATED APIS *********************
-
 
   ///  useful for getting conversation  id
 
-  static String getConversationId(String id) => user.uid.hashCode <= id.hashCode ? '${user.uid}_$id' : '${id}_${user.uid}';
+  static String getConversationId(String id) => user.uid.hashCode <= id.hashCode
+      ? '${user.uid}_$id'
+      : '${id}_${user.uid}';
 
   // FOR GETTING ALL USER FROM FIRESTORE DATABASE
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(ChatUser user) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(
+      ChatUser user) {
     return firestore
         .collection('chats/${getConversationId(user.id)}/messages/')
         .snapshots();
   }
 
   // for sending messages
-  static Future<void> sendMessage(ChatUser ChatUser1,String message) async{
-
+  static Future<void> sendMessage(ChatUser ChatUser1, String message1) async {
     // message sending time(also use an id)
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
     // message to send
-    final Message message = Message(msg: user.uid, formId: user.uid, read: '', told: ChatUser1.id, type: Type.text, sent: time);
+    final Message message = Message(
+        told: ChatUser1.id,
+        msg: message1,
+        read: '',
+        type: Type.text,
+        formId: user.uid,
+        sent: time);
 
-    final ref = firestore.collection('chats/${getConversationId(ChatUser1.id)}/messages/');
-    ref.doc().set(message.toJson());
-
+    final ref = firestore
+        .collection('chats/${getConversationId(ChatUser1.id)}/messages/');
+    await ref.doc(time).set(message.toJson());
   }
 
   // Chats(Collection) --> Conversation Id(doc) --> messages(Collection) --> message(doc)
-
 }

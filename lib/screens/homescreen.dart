@@ -32,13 +32,12 @@ class _HomescreenState extends State<Homescreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        if(_isSearchOn){
+        if (_isSearchOn) {
           setState(() {
             _isSearchOn = !_isSearchOn;
           });
           return Future.value(false);
-        }
-        else{
+        } else {
           return Future.value(true);
         }
       },
@@ -61,67 +60,71 @@ class _HomescreenState extends State<Homescreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => ProfileScreen(user: ApIs.me)));
+                                  builder: (_) =>
+                                      ProfileScreen(user: ApIs.me)));
                         },
                         icon: new Image.asset("images/acc.png"),
                       ),
                     ),
-
                     SizedBox(
                       height: mq.height * .015,
                     ),
                     Padding(
                       padding: EdgeInsets.all(mq.height * .019),
                       child: Container(
-                      height: mq.height * .05,
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                      color: Colors.white60,
-                      borderRadius: BorderRadius.circular(25),
-                      ),
+                        height: mq.height * .05,
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                         child: Column(
                           children: [
-                           Row(
-                            children: [
+                            Row(
+                              children: [
                                 Flexible(
                                     child: SizedBox(
-                                    height: mq.height * .05,
-                                      child: TextField(
-                                        onTap: () {
-                                          setState(() {
-                                            _isSearchOn = !_isSearchOn;
-                                          });
-                                        },
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(bottom: 5),
-                                        hintText: "Search Message Here",
-                                        border: InputBorder.none,
+                                  height: mq.height * .05,
+                                  child: TextField(
+                                    onTap: () {
+                                      setState(() {
+                                        _isSearchOn = !_isSearchOn;
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          EdgeInsets.only(bottom: 5),
+                                      hintText: "Search Message Here",
+                                      border: InputBorder.none,
                                     ),
-                                        // when search  text changes it will update the search list
-                                        onChanged: (value) {
-                                          _searchList.clear();
-                                          for(var i in _list){
-                                            if(i.name.toLowerCase().contains(value.toLowerCase()) ||
-                                                i.name.toUpperCase().contains(value.toUpperCase())){
-                                              _searchList.add(i);
-                                            }
-                                            setState(() {
-                                              _searchList;
-                                            });
-                                          }
-                                        },
-                                    ),
-                                    )),
-                                Icon( _isSearchOn ?
-                                CupertinoIcons.clear_circled_solid:
-                                Icons.search,
+                                    // when search  text changes it will update the search list
+                                    onChanged: (value) {
+                                      _searchList.clear();
+                                      for (var i in _list) {
+                                        if (i.name.toLowerCase().contains(
+                                                value.toLowerCase()) ||
+                                            i.name.toUpperCase().contains(
+                                                value.toUpperCase())) {
+                                          _searchList.add(i);
+                                        }
+                                        setState(() {
+                                          _searchList;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                )),
+                                Icon(
+                                  _isSearchOn
+                                      ? CupertinoIcons.clear_circled_solid
+                                      : Icons.search,
+                                ),
+                              ],
+                            )
+                          ],
                         ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
+                      ),
+                    ),
                     Flexible(
                       fit: FlexFit.tight,
                       child: Container(
@@ -146,27 +149,32 @@ class _HomescreenState extends State<Homescreen> {
                                 case ConnectionState.done:
                                   final data = snapshot.data?.docs;
                                   _list = data
-                                          ?.map((e) => ChatUser.fromJson(e.data()))
+                                          ?.map((e) =>
+                                              ChatUser.fromJson(e.data()))
                                           .toList() ??
                                       [];
 
-                              if (_list.isNotEmpty) {
-                                return ListView.builder(
-                                    physics: BouncingScrollPhysics(),
-                                    itemCount: _isSearchOn ? _searchList.length : _list.length,
-                                    itemBuilder: (context, index) {
-                                      return chat_user_card(
-                                        user:_isSearchOn? _searchList[index] : _list[index],
-                                      );
-                                      // return Text('Name:${list[index]}');
-                                    });
-                              } else {
-                                return Center(
-                                    child: Text(
+                                  if (_list.isNotEmpty) {
+                                    return ListView.builder(
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: _isSearchOn
+                                            ? _searchList.length
+                                            : _list.length,
+                                        itemBuilder: (context, index) {
+                                          return chat_user_card(
+                                            user: _isSearchOn
+                                                ? _searchList[index]
+                                                : _list[index],
+                                          );
+                                          // return Text('Name:${list[index]}');
+                                        });
+                                  } else {
+                                    return Center(
+                                        child: Text(
                                       'No Connection Found',
                                       style: TextStyle(fontSize: 18),
                                     ));
-                              }
+                                  }
                               }
                             },
                           ),
@@ -183,5 +191,3 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 }
-
-

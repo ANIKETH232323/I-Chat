@@ -21,6 +21,9 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   List<Message> _list = [];
 
+  // handling text messages
+  final _textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -115,16 +118,15 @@ class _ChatScreenState extends State<ChatScreen> {
                         // if Data is loading
                         case ConnectionState.waiting:
                         case ConnectionState.none:
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return SizedBox();
                         // if some or all data is loaded then show it
                         case ConnectionState.active:
                         case ConnectionState.done:
                           final data = snapshot.data?.docs;
 
                           _list = data
-                              ?.map((e) => Message.fromJson(e.data()))
-                              .toList() ??
+                                  ?.map((e) => Message.fromJson(e.data()))
+                                  .toList() ??
                               [];
 
                           if (_list.isNotEmpty) {
@@ -178,6 +180,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   Expanded(
                       child: TextField(
+                    controller: _textController,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration: InputDecoration(
@@ -209,7 +212,12 @@ class _ChatScreenState extends State<ChatScreen> {
             height: 500,
           ),
           MaterialButton(
-              onPressed: () {},
+              onPressed: () {
+                if (_textController.text.isNotEmpty) {
+                  ApIs.sendMessage(widget.user, _textController.text);
+                  _textController.text = '';
+                }
+              },
               shape: CircleBorder(),
               minWidth: 0,
               padding:
