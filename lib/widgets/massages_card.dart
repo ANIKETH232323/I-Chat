@@ -33,14 +33,13 @@ class _MessageCardState extends State<MessageCard> {
           padding: const EdgeInsets.only(right: 24),
           child: Flexible(
             child: Container(
-
               padding: EdgeInsets.all(15),
               margin: EdgeInsets.only(top: 30,left: 25),
               decoration: BoxDecoration(
                   color: Color.fromARGB(255, 151, 71, 255),
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),bottomRight: Radius.circular(30),)
               ),
-              child: Text(widget.message.msg+" dfniewniadsvsdjknvjkdsjkvdfvdsvskjnvjkrengjkeoewnfinfiueeo",
+              child: Text(widget.message.msg+" How are You doing?",
 
                 style:TextStyle(color: Colors.white,
                   fontSize: 15,
@@ -50,13 +49,18 @@ class _MessageCardState extends State<MessageCard> {
             ),
           ),
         ),
+        // For Time and Double right Button
+        Row(children: [
+          Container(
+              margin: EdgeInsets.only(top: 5,left: 30),
+              child: Icon(Icons.done_all_rounded,color: Colors.blue)),
+          Container(
+              margin: EdgeInsets.only(left:5,right: 10,top: 5),
+              child: Text("12.00 AM",
+                style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),
+              )),
 
-        // For Time
-        Container(
-            margin: EdgeInsets.symmetric(horizontal: 29,vertical: 5),
-            child: Text("12.00 AM",
-              style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),
-            ))
+        ],)
       ],
     );
   }
@@ -64,33 +68,43 @@ class _MessageCardState extends State<MessageCard> {
   // our or user message
   Widget _greenMessage() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 24),
-          child: Container(
-            padding: EdgeInsets.all(15),
-            width: 125,
-            margin: EdgeInsets.only(top: 30,left: 25),
-            decoration: BoxDecoration(
-                color: Color.fromARGB(255, 151, 71, 255),
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),bottomLeft: Radius.circular(30),)
-            ),
-            child: Text(widget.message.msg,
-              style:TextStyle(color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+          child: Flexible(
+            child: Container(
+              padding: EdgeInsets.all(15),
+              margin: EdgeInsets.only(top: 30,left: 25),
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 151, 71, 255),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),bottomLeft: Radius.circular(30),)
+              ),
+              child: Text(widget.message.msg,
+                style:TextStyle(color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
         ),
 
-        // For Time
-        Container(
-            margin: EdgeInsets.symmetric(horizontal: 29,vertical: 5),
-            child: Text("12.00 AM",
-              style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),
-            ))
+        // For Time and SEEN
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+
+                margin: EdgeInsets.only(top: 1),
+                child: Icon(Icons.done_all_rounded,color: Colors.blue)),
+          Container(
+              margin: EdgeInsets.only(left: 5,right: 10,top: 5),
+              child: Text("12.00 AM",
+                style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),
+              )),
+
+        ],)
       ],
     );
   }
