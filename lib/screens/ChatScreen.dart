@@ -26,146 +26,159 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 88, 45, 209),
-        body: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: mq.height * .15),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(38),
-                      topLeft: Radius.circular(38))),
-            ),
-
-            // Status Bar or CALL OR VIDEO BAR
-            Row(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: SafeArea(
+        child: WillPopScope(
+          onWillPop: () {
+            if (_showEmoji) {
+              setState(() => _showEmoji = !_showEmoji);
+              return Future.value(false);
+            } else {
+              return Future.value(true);
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Color.fromARGB(255, 88, 45, 209),
+            body: Stack(
               children: [
-                SizedBox(
-                  height: mq.height * .15,
-                  width: mq.width * .02,
+                Container(
+                  margin: EdgeInsets.only(top: mq.height * .15),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(38),
+                          topLeft: Radius.circular(38))),
                 ),
-                IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    iconSize: 35,
-                    // padding: EdgeInsets.only(top: 45,left: 5),
-                    icon: Icon(Icons.arrow_back_ios_new_outlined,
-                        color: Colors.white)),
-                ClipRRect(
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    width: mq.height * .05,
-                    height: mq.height * .05,
-                    imageUrl: widget.user.image,
-                    // placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => CircleAvatar(
-                        child: Icon(CupertinoIcons.person),
-                        backgroundColor: Colors.amberAccent),
-                  ),
-                  borderRadius: BorderRadius.circular(mq.height * .2),
-                ),
-                SizedBox(
-                  width: mq.width * .035,
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // User Name
-                    Text(widget.user.name,
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white)),
-                    SizedBox(height: mq.height * .005),
 
-                    // Last seen
-                    Text('Online',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
+                // Status Bar or CALL OR VIDEO BAR
+                Row(
+                  children: [
+                    SizedBox(
+                      height: mq.height * .15,
+                      width: mq.width * .02,
+                    ),
+                    IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        iconSize: 35,
+                        // padding: EdgeInsets.only(top: 45,left: 5),
+                        icon: Icon(Icons.arrow_back_ios_new_outlined,
                             color: Colors.white)),
+                    ClipRRect(
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        width: mq.height * .05,
+                        height: mq.height * .05,
+                        imageUrl: widget.user.image,
+                        // placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => CircleAvatar(
+                            child: Icon(CupertinoIcons.person),
+                            backgroundColor: Colors.amberAccent),
+                      ),
+                      borderRadius: BorderRadius.circular(mq.height * .2),
+                    ),
+                    SizedBox(
+                      width: mq.width * .035,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // User Name
+                        Text(widget.user.name,
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white)),
+                        SizedBox(height: mq.height * .005),
+
+                        // Last seen
+                        Text('Online',
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white)),
+                      ],
+                    ),
+                    SizedBox(
+                      width: mq.height * .09,
+                    ),
+                    IconButton(
+                        onPressed: () {},
+                        iconSize: 28,
+                        icon: Icon(Icons.call_sharp, color: Colors.white)),
+                    IconButton(
+                        onPressed: () {},
+                        iconSize: 28,
+                        icon: Icon(Icons.videocam_sharp, color: Colors.white)),
                   ],
                 ),
-                SizedBox(
-                  width: mq.height * .09,
-                ),
-                IconButton(
-                    onPressed: () {},
-                    iconSize: 28,
-                    icon: Icon(Icons.call_sharp, color: Colors.white)),
-                IconButton(
-                    onPressed: () {},
-                    iconSize: 28,
-                    icon: Icon(Icons.videocam_sharp, color: Colors.white)),
-              ],
-            ),
 
-            //CHATS AND SENDING BUTTONS
+                //CHATS AND SENDING BUTTONS
 
-            Column(
-              children: [
-                SizedBox(
-                  height: 125,
-                ),
-                Expanded(
-                  child: StreamBuilder(
-                    stream: ApIs.getAllMessages(widget.user),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        // if Data is loading
-                        case ConnectionState.waiting:
-                        case ConnectionState.none:
-                          return SizedBox();
-                        // if some or all data is loaded then show it
-                        case ConnectionState.active:
-                        case ConnectionState.done:
-                          final data = snapshot.data?.docs;
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 125,
+                    ),
+                    Expanded(
+                      child: StreamBuilder(
+                        stream: ApIs.getAllMessages(widget.user),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            // if Data is loading
+                            case ConnectionState.waiting:
+                            case ConnectionState.none:
+                              return SizedBox();
+                            // if some or all data is loaded then show it
+                            case ConnectionState.active:
+                            case ConnectionState.done:
+                              final data = snapshot.data?.docs;
 
-                          _list = data
-                                  ?.map((e) => Message.fromJson(e.data()))
-                                  .toList() ??
-                              [];
+                              _list = data
+                                      ?.map((e) => Message.fromJson(e.data()))
+                                      .toList() ??
+                                  [];
 
-                          if (_list.isNotEmpty) {
-                            return ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                itemCount: _list.length,
-                                itemBuilder: (context, index) {
-                                  return MessageCard(
-                                    message: _list[index],
-                                  );
-                                });
-                          } else {
-                            return Center(
-                                child: Text(
-                              'Say Hii! 👋',
-                              style: TextStyle(fontSize: 25),
-                            ));
+                              if (_list.isNotEmpty) {
+                                return ListView.builder(
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: _list.length,
+                                    itemBuilder: (context, index) {
+                                      return MessageCard(
+                                        message: _list[index],
+                                      );
+                                    });
+                              } else {
+                                return Center(
+                                    child: Text(
+                                  'Say Hii! 👋',
+                                  style: TextStyle(fontSize: 25),
+                                ));
+                              }
                           }
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(height: 90, child: Expanded(child: _chatInput())),
-                if (_showEmoji)
-                  Flexible(
-                    child: SizedBox(
-                      height: mq.height * .45,
-                      child: EmojiPicker(
-                        textEditingController: _textController,
-                        config: Config(
-                          columns: 7,
-                          bgColor: Colors.white,
-                        ),
+                        },
                       ),
                     ),
-                  ),
+                    SizedBox(height: 90, child: Expanded(child: _chatInput())),
+                    if (_showEmoji)
+                      Flexible(
+                        child: SizedBox(
+                          height: mq.height * .45,
+                          child: EmojiPicker(
+                            textEditingController: _textController,
+                            config: Config(
+                              columns: 7,
+                              bgColor: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -185,6 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   // emoji Button
                   IconButton(
                     onPressed: () {
+                      FocusScope.of(context).unfocus();
                       setState(() {
                         _showEmoji = !_showEmoji;
                       });
@@ -200,6 +214,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     controller: _textController,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    onTap: () {
+                      if (_showEmoji) setState(() => _showEmoji = !_showEmoji);
+                    },
                     decoration: InputDecoration(
                         hintText: "Message",
                         hintStyle: TextStyle(fontWeight: FontWeight.bold),
