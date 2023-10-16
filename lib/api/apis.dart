@@ -127,7 +127,7 @@ class ApIs {
   // Chats(Collection) --> Conversation Id(doc) --> messages(Collection) --> message(doc)
 
   // Update Read Status of message
-  static Future<void> updateMessageReadStatus(Message message) async {
+   static Future<void> updateMessageReadStatus(Message message) async {
     firestore
         .collection('chats/${getConversationId(message.formId)}/messages/')
         .doc(message.sent)

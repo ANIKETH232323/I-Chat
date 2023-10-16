@@ -76,7 +76,7 @@ class _MessageCardState extends State<MessageCard> {
   }
   Widget _blueMessage() {
 
-    // update blut tick done mark
+    // update blue tick done mark
     if(widget.message.read.isEmpty){
       ApIs.updateMessageReadStatus(widget.message);
     }
