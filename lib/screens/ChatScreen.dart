@@ -1,7 +1,5 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
@@ -20,6 +18,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   List<Message> _list = [];
+
+  bool _showEmoji = false;
 
   // handling text messages
   final _textController = TextEditingController();
@@ -150,8 +150,21 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 SizedBox(height: 90, child: Expanded(child: _chatInput())),
+                if (_showEmoji)
+                  Flexible(
+                    child: SizedBox(
+                      height: mq.height * .45,
+                      child: EmojiPicker(
+                        textEditingController: _textController,
+                        config: Config(
+                          columns: 7,
+                          bgColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -171,7 +184,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   // emoji Button
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        _showEmoji = !_showEmoji;
+                      });
+                    },
                     icon: Icon(
                       Icons.emoji_emotions_rounded,
                       size: 20,

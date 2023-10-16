@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
+import 'package:i_chat/helper/mydate_donemark.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
@@ -60,13 +61,16 @@ class _chatUser extends State<chat_user_card> {
                     ),
                     title: Text(widget.user.name),
                     subtitle: Text(_message !=null ? _message!.msg : widget.user.about,maxLines: 1,),
-                    trailing: Container(
+                    trailing: _message == null ? null :
+                    _message!.read.isEmpty && _message!.formId !=ApIs.user.uid ?
+
+                    Container(
                       width: 25,height: 25,
                       decoration: BoxDecoration(
                           color: Colors.blueAccent,
                           borderRadius: BorderRadius.circular(20)
                       ),
-                    )
+                    ) : Text(MyDate.getLastMessageTime(context: context,sent: _message!.sent))
                   // trailing: Text('12.00 PM',style: TextStyle(fontWeight:FontWeight.bold),),
                 );
               } ,)),
