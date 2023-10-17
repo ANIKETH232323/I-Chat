@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,7 @@ import 'package:i_chat/main.dart';
 import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/widgets/massages_card.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatUser user;
@@ -233,7 +236,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   // Camera Button
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                            final ImagePicker picker = ImagePicker();
+                            final XFile? image = await picker.pickImage(
+                            source: ImageSource.camera, imageQuality: 80);
+                            if (image != null) {
+                            ApIs. sendChatImage(widget.user, File(image.path));
+                            }
+                            },
+
                       icon: Icon(
                         Icons.camera_alt,
                         size: 20,
@@ -248,7 +259,7 @@ class _ChatScreenState extends State<ChatScreen> {
           MaterialButton(
               onPressed: () {
                 if (_textController.text.isNotEmpty) {
-                  ApIs.sendMessage(widget.user, _textController.text);
+                  ApIs.sendMessage(widget.user, _textController.text,Type.text);
                   _textController.text = '';
                 }
               },

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/helper/mydate_donemark.dart';
@@ -39,10 +40,22 @@ class _MessageCardState extends State<MessageCard> {
                   color: Color.fromARGB(255, 151, 71, 255),
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),bottomLeft: Radius.circular(30),)
               ),
-              child: Text(widget.message.msg,
+              child:
+              widget.message.type == Type.text ?
+              Text(widget.message.msg,
                 style:TextStyle(color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
+                ),
+              ): ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  width: mq.width * .65,
+                  imageUrl: widget.message.msg,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  // placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.image,size: 70,),
                 ),
               ),
             ),
@@ -76,7 +89,7 @@ class _MessageCardState extends State<MessageCard> {
   }
   Widget _blueMessage() {
 
-    // update blue tick done mark
+    // update blue  tick done mark
     if(widget.message.read.isEmpty){
       ApIs.updateMessageReadStatus(widget.message);
     }
@@ -93,12 +106,23 @@ class _MessageCardState extends State<MessageCard> {
                   color: Color.fromARGB(255, 197, 197, 195),
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),bottomRight: Radius.circular(30),)
               ),
-              child: Text(widget.message.msg,
+              child:
+                  widget.message.type == Type.text ?
+              Text(widget.message.msg,
 
                 style:TextStyle(color: Color.fromARGB(255, 67, 56, 56),
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
+              ) : ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+
+                      imageUrl: widget.message.msg,
+                      // placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.image,size: 70,),
+                    ),
               ),
             ),
           ),
