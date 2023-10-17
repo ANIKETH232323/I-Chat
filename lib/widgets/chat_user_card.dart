@@ -60,7 +60,10 @@ class _chatUser extends State<chat_user_card> {
                       ),
                     ),
                     title: Text(widget.user.name),
-                    subtitle: Text(_message !=null ? _message!.msg : widget.user.about,maxLines: 1,),
+                    subtitle: Text(_message !=null ?
+                    _message!.type == Type.image ?
+                        'Photo':
+                    _message!.msg : widget.user.about,maxLines: 1,),
                     trailing: _message == null ? null :
                     _message!.read.isEmpty && _message!.formId !=ApIs.user.uid ?
 

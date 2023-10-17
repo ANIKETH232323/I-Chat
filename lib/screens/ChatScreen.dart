@@ -22,7 +22,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   List<Message> _list = [];
 
-  bool _showEmoji = false;
+  bool _showEmoji = false, _isUploading = false;
 
   // handling text messages
   final _textController = TextEditingController();
@@ -145,6 +145,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                               if (_list.isNotEmpty) {
                                 return ListView.builder(
+                                  reverse :true,
                                     physics: BouncingScrollPhysics(),
                                     itemCount: _list.length,
                                     itemBuilder: (context, index) {
@@ -163,6 +164,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                       ),
                     ),
+
+
                     SizedBox(height: 90, child: Expanded(child: _chatInput())),
                     if (_showEmoji)
                       Flexible(
@@ -228,7 +231,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   // Pick Up
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        final List<XFile>? images2 = await picker.pickMultiImage(imageQuality: 80);
+
+                        for(var i in images2!){
+                          ApIs. sendChatImage(widget.user, File(i.path));
+                        };
+
+                      },
                       icon: Icon(
                         Icons.image,
                         size: 20,
