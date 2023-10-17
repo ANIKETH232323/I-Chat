@@ -161,4 +161,17 @@ class ApIs {
     await sendMessage( chatUser, imageUrl, Type.image);
   }
 
+
+  // get user last seen or online info showing
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getUserStatusInfo(ChatUser chatUser) {
+    return firestore
+        .collection('user')
+        .where('id', isEqualTo: chatUser.id)
+        .snapshots();
+  }
+  static Future<void>updateStatus(bool isOnline){
+    return firestore
+        .collection('user'). doc(user.uid).update({'is_online' : isOnline, 'lastActive':DateTime.now().millisecondsSinceEpoch});
+  }
+
 }
