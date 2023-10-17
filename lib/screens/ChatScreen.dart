@@ -165,6 +165,14 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
 
+                  if(_isUploading)
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
 
                     SizedBox(height: 90, child: Expanded(child: _chatInput())),
                     if (_showEmoji)
@@ -236,7 +244,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         final List<XFile>? images2 = await picker.pickMultiImage(imageQuality: 80);
 
                         for(var i in images2!){
+                          setState(() => _isUploading = true);
                           ApIs. sendChatImage(widget.user, File(i.path));
+                          setState(() => _isUploading = false);
                         };
 
                       },
@@ -252,7 +262,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             final XFile? image = await picker.pickImage(
                             source: ImageSource.camera, imageQuality: 80);
                             if (image != null) {
+                              setState(() => _isUploading = true);
                             ApIs. sendChatImage(widget.user, File(image.path));
+                              setState(() => _isUploading = false);
                             }
                             },
 
