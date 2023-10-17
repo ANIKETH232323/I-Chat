@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/chatUse.dart';
@@ -26,6 +27,13 @@ class _HomescreenState extends State<Homescreen> {
   void initState() {
     super.initState();
     ApIs.userSelfInfo();
+    ApIs.updateStatus(true);
+    SystemChannels.lifecycle.setMessageHandler((message){
+
+      if(message.toString().contains('resume')) ApIs.updateStatus(true);
+      if(message.toString().contains('pause')) ApIs.updateStatus( false);
+      return Future.value(message);
+    });
   }
 
   @override
