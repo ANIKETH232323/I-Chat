@@ -5,6 +5,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
+import 'package:i_chat/helper/mydate_donemark.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
@@ -45,6 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
             backgroundColor: Color.fromARGB(255, 88, 45, 209),
             body: Stack(
               children: [
+
                 Container(
                   margin: EdgeInsets.only(top: mq.height * .15),
                   decoration: BoxDecoration(
@@ -67,41 +69,75 @@ class _ChatScreenState extends State<ChatScreen> {
                         // padding: EdgeInsets.only(top: 45,left: 5),
                         icon: Icon(Icons.arrow_back_ios_new_outlined,
                             color: Colors.white)),
-                    ClipRRect(
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        width: mq.height * .05,
-                        height: mq.height * .05,
-                        imageUrl: widget.user.image,
-                        // placeholder: (context, url) => CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => CircleAvatar(
-                            child: Icon(CupertinoIcons.person),
-                            backgroundColor: Colors.amberAccent),
+                    Container(
+                      child: StreamBuilder(
+                        stream:ApIs.getUserStatusInfo(widget.user),
+                        builder: (context, snapshot) {
+
+                          final data = snapshot.data?.docs;
+
+                          final list = data
+                              ?.map((e) => ChatUser.fromJson(e.data()))
+                              .toList() ??
+                              [];
+
+                          return ClipRRect(
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              width: mq.height * .05,
+                              height: mq.height * .05,
+                              imageUrl: list.isNotEmpty ? list[0].image : widget.user.image,
+                              // placeholder: (context, url) => CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => CircleAvatar(
+                                  child: Icon(CupertinoIcons.person),
+                                  backgroundColor: Colors.amberAccent),
+                            ),
+                            borderRadius: BorderRadius.circular(mq.height * .2),
+                          );
+
+                        },
                       ),
-                      borderRadius: BorderRadius.circular(mq.height * .2),
                     ),
+
                     SizedBox(
                       width: mq.width * .035,
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // User Name
-                        Text(widget.user.name,
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
-                        SizedBox(height: mq.height * .005),
 
-                        // Last seen
-                        Text('Online',
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
-                      ],
+                    // User Name
+                    Container(
+                      child: StreamBuilder(
+                        stream: ApIs.getUserStatusInfo(widget.user),
+                        builder: (context, snapshot) {
+                          final data = snapshot.data?.docs;
+
+                          final list = data
+                              ?.map((e) => ChatUser.fromJson(e.data()))
+                              .toList() ??
+                              [];
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // User Name
+                              Text(list.isNotEmpty ? list[0].name : widget.user.name,
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white)),
+                              SizedBox(height: mq.height * .005),
+
+                              // Last seen
+                              Container(
+
+                                  child:Text(list.isNotEmpty ?
+                                  list[0].isOnline ? 'Online' :
+                                  MyDate.getLastActiveTime(context: context, lastActive: list[0].lastActive) :
+                                  MyDate.getLastActiveTime(context: context, lastActive: widget.user.lastActive))
+                              ),
+                            ],
+                          );
+                        },
+                      )
                     ),
                     SizedBox(
                       width: mq.height * .09,
