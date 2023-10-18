@@ -9,6 +9,7 @@ import 'package:i_chat/helper/mydate_donemark.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
+import 'package:i_chat/screens/chat_to_profile.dart';
 import 'package:i_chat/widgets/massages_card.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:marquee_text/marquee_text.dart';
@@ -80,21 +81,27 @@ class _ChatScreenState extends State<ChatScreen> {
                                   .toList() ??
                               [];
 
-                          return ClipRRect(
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              width: mq.height * .05,
-                              height: mq.height * .05,
-                              imageUrl: list.isNotEmpty
-                                  ? list[0].image
-                                  : widget.user.image,
-                              // placeholder: (context, url) => CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  CircleAvatar(
-                                      child: Icon(CupertinoIcons.person),
-                                      backgroundColor: Colors.amberAccent),
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => ChatToProfileScreen(user: widget.user,)));
+
+                            },
+                            child: ClipRRect(
+                              child: CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                width: mq.height * .05,
+                                height: mq.height * .05,
+                                imageUrl: list.isNotEmpty
+                                    ? list[0].image
+                                    : widget.user.image,
+                                // placeholder: (context, url) => CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    CircleAvatar(
+                                        child: Icon(CupertinoIcons.person),
+                                        backgroundColor: Colors.amberAccent),
+                              ),
+                              borderRadius: BorderRadius.circular(mq.height * .2),
                             ),
-                            borderRadius: BorderRadius.circular(mq.height * .2),
                           );
                         },
                       ),
@@ -105,57 +112,62 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
 
                     // User Name
-                    Container(
-                        width: mq.width * .25,
-                        child: StreamBuilder(
-                          stream: ApIs.getUserStatusInfo(widget.user),
-                          builder: (context, snapshot) {
-                            final data = snapshot.data?.docs;
+                    InkWell(
+                      onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => ChatToProfileScreen(user: widget.user,)));
+                      },
+                      child: Container(
+                          width: mq.width * .25,
+                          child: StreamBuilder(
+                            stream: ApIs.getUserStatusInfo(widget.user),
+                            builder: (context, snapshot) {
+                              final data = snapshot.data?.docs;
 
-                            final list = data
-                                    ?.map((e) => ChatUser.fromJson(e.data()))
-                                    .toList() ??
-                                [];
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // User Name
-                                Text(
-                                    list.isNotEmpty
-                                        ? list[0].name
-                                        : widget.user.name,
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white)),
-                                SizedBox(height: mq.height * .005),
+                              final list = data
+                                      ?.map((e) => ChatUser.fromJson(e.data()))
+                                      .toList() ??
+                                  [];
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // User Name
+                                  Text(
+                                      list.isNotEmpty
+                                          ? list[0].name
+                                          : widget.user.name,
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white)),
+                                  SizedBox(height: mq.height * .005),
 
-                                // Last seen
-                                Container(
-                                  child: MarqueeText(
-                                    text: TextSpan(
-                                        text: list.isNotEmpty
-                                            ? list[0].isOnline
-                                                ? 'Online'
-                                                : MyDate.getLastActiveTime(
-                                                    context: context,
-                                                    lastActive:
-                                                        list[0].lastActive)
-                                            : MyDate.getLastActiveTime(
-                                                context: context,
-                                                lastActive:
-                                                    widget.user.lastActive)),
-                                    speed: 10,
-                                    alwaysScroll: false,
-                                    style:
-                                        TextStyle(color: CupertinoColors.white),
+                                  // Last seen
+                                  Container(
+                                    child: MarqueeText(
+                                      text: TextSpan(
+                                          text: list.isNotEmpty
+                                              ? list[0].isOnline
+                                                  ? 'Online'
+                                                  : MyDate.getLastActiveTime(
+                                                      context: context,
+                                                      lastActive:
+                                                          list[0].lastActive)
+                                              : MyDate.getLastActiveTime(
+                                                  context: context,
+                                                  lastActive:
+                                                      widget.user.lastActive)),
+                                      speed: 10,
+                                      alwaysScroll: false,
+                                      style:
+                                          TextStyle(color: CupertinoColors.white),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
-                        )),
+                                ],
+                              );
+                            },
+                          )),
+                    ),
                     SizedBox(
                       width: mq.width * .2,
                     ),

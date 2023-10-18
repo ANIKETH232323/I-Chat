@@ -8,16 +8,26 @@ class MyDate{
     return TimeOfDay.fromDateTime(date).format(context);
   }
 
-  static String getLastMessageTime({required BuildContext context,required String sent}){
-    final DateTime dateTime  = DateTime.fromMillisecondsSinceEpoch(int.parse(sent));
+  static String getLastMessageTime(
+      {required BuildContext context,
+        required String sent1,
+        bool showYear = false}) {
+    final DateTime sent = DateTime.fromMillisecondsSinceEpoch(int.parse(sent1));
     final DateTime now = DateTime.now();
 
-    if(now.day == dateTime.day && now.month == dateTime.month && now.year == dateTime.year){
-        return TimeOfDay.fromDateTime(dateTime).format(context);
+    if (now.day == sent.day &&
+        now.month == sent.month &&
+        now.year == sent.year) {
+      return TimeOfDay.fromDateTime(sent).format(context);
     }
 
-    return '${dateTime.day} ${_getMonth(dateTime)}';
+    return showYear
+        ? '${sent.day} ${_getMonth(sent)} ${sent.year}'
+        : '${sent.day} ${_getMonth(sent)}';
   }
+
+
+
   static String _getMonth(DateTime dateTime){
 
     switch(dateTime.month){
@@ -25,37 +35,37 @@ class MyDate{
         return 'Jan';
 
         case 2:
-          return 'Jan';
+          return 'Feb';
 
         case 3:
-          return 'Jan';
+          return 'March';
 
         case 4:
-          return 'Jan';
+          return 'April';
 
         case 5:
-          return 'Jan';
+          return 'May';
 
         case 6:
-          return 'Jan';
+          return 'June';
 
         case 7:
-          return 'Jan';
+          return 'July';
 
         case 8:
-          return 'Jan';
+          return 'August';
 
         case 9:
-          return 'Jan';
+          return 'September';
 
         case 10:
-          return 'Jan';
+          return 'October';
 
         case 11:
-          return 'Jan';
+          return 'November';
 
         case 12:
-          return 'Jan';
+          return 'December';
     }
     return 'NA';
 

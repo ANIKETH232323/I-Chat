@@ -73,7 +73,7 @@ class _chatUser extends State<chat_user_card> {
                           color: Colors.blueAccent,
                           borderRadius: BorderRadius.circular(20)
                       ),
-                    ) : Text(MyDate.getLastMessageTime(context: context,sent: _message!.sent))
+                    ) : Text(MyDate.getLastMessageTime(context: context,sent1: _message!.sent))
                   // trailing: Text('12.00 PM',style: TextStyle(fontWeight:FontWeight.bold),),
                 );
               } ,)),
