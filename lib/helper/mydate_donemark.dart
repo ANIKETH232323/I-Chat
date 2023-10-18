@@ -84,7 +84,6 @@ class MyDate{
     }
 
     String month = _getMonth(time);
-
     return 'Last seen on ${time.day} $month on $formattedTime';
   }
 

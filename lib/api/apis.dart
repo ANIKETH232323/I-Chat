@@ -169,9 +169,12 @@ class ApIs {
         .where('id', isEqualTo: chatUser.id)
         .snapshots();
   }
-  static Future<void>updateStatus(bool isOnline){
-    return firestore
-        .collection('user'). doc(user.uid).update({'is_online' : isOnline, 'lastActive':DateTime.now().millisecondsSinceEpoch});
+  static Future<void> updateStatus(bool isOnline) async {
+    firestore.collection('user').doc(user.uid).update({
+      'is_online': isOnline,
+      'last_active': DateTime.now().millisecondsSinceEpoch.toString(),
+      'push_token': me.pushToken,
+    });
   }
 
 }

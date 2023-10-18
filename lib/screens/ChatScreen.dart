@@ -132,10 +132,11 @@ class _ChatScreenState extends State<ChatScreen> {
                               Container(
                                   child:MarqueeText(
                                     text: TextSpan(
-                                        text:list.isNotEmpty ?
-                                        list[0].isOnline ? 'Online' :
-                                        MyDate.getLastActiveTime(context: context, lastActive: list[0].lastActive) :
-                                        MyDate.getLastActiveTime(context: context, lastActive: widget.user.lastActive)
+                                        text:list.isNotEmpty
+                                            ? list[0].isOnline
+                                            ? 'Online'
+                                            : MyDate.getLastActiveTime(context: context, lastActive: list[0].lastActive)
+                                            : MyDate.getLastActiveTime(context: context, lastActive: widget.user.lastActive)
                                     ),
                                     speed: 10,
                                     alwaysScroll: false,
