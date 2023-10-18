@@ -140,6 +140,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     ),
                                     speed: 10,
                                     alwaysScroll: false,
+                                    style: TextStyle(color: CupertinoColors.white),
                                   ),
                               ),
                             ],
