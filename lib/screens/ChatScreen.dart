@@ -48,7 +48,6 @@ class _ChatScreenState extends State<ChatScreen> {
             backgroundColor: Color.fromARGB(255, 88, 45, 209),
             body: Stack(
               children: [
-
                 Container(
                   margin: EdgeInsets.only(top: mq.height * .15),
                   decoration: BoxDecoration(
@@ -72,14 +71,13 @@ class _ChatScreenState extends State<ChatScreen> {
                             color: Colors.white)),
                     Container(
                       child: StreamBuilder(
-                        stream:ApIs.getUserStatusInfo(widget.user),
+                        stream: ApIs.getUserStatusInfo(widget.user),
                         builder: (context, snapshot) {
-
                           final data = snapshot.data?.docs;
 
                           final list = data
-                              ?.map((e) => ChatUser.fromJson(e.data()))
-                              .toList() ??
+                                  ?.map((e) => ChatUser.fromJson(e.data()))
+                                  .toList() ??
                               [];
 
                           return ClipRRect(
@@ -87,15 +85,17 @@ class _ChatScreenState extends State<ChatScreen> {
                               fit: BoxFit.cover,
                               width: mq.height * .05,
                               height: mq.height * .05,
-                              imageUrl: list.isNotEmpty ? list[0].image : widget.user.image,
+                              imageUrl: list.isNotEmpty
+                                  ? list[0].image
+                                  : widget.user.image,
                               // placeholder: (context, url) => CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => CircleAvatar(
-                                  child: Icon(CupertinoIcons.person),
-                                  backgroundColor: Colors.amberAccent),
+                              errorWidget: (context, url, error) =>
+                                  CircleAvatar(
+                                      child: Icon(CupertinoIcons.person),
+                                      backgroundColor: Colors.amberAccent),
                             ),
                             borderRadius: BorderRadius.circular(mq.height * .2),
                           );
-
                         },
                       ),
                     ),
@@ -106,48 +106,56 @@ class _ChatScreenState extends State<ChatScreen> {
 
                     // User Name
                     Container(
-                      width: mq.width * .25,
-                      child: StreamBuilder(
-                        stream: ApIs.getUserStatusInfo(widget.user),
-                        builder: (context, snapshot) {
-                          final data = snapshot.data?.docs;
+                        width: mq.width * .25,
+                        child: StreamBuilder(
+                          stream: ApIs.getUserStatusInfo(widget.user),
+                          builder: (context, snapshot) {
+                            final data = snapshot.data?.docs;
 
-                          final list = data
-                              ?.map((e) => ChatUser.fromJson(e.data()))
-                              .toList() ??
-                              [];
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // User Name
-                              Text(list.isNotEmpty ? list[0].name : widget.user.name,
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white)),
-                              SizedBox(height: mq.height * .005),
+                            final list = data
+                                    ?.map((e) => ChatUser.fromJson(e.data()))
+                                    .toList() ??
+                                [];
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // User Name
+                                Text(
+                                    list.isNotEmpty
+                                        ? list[0].name
+                                        : widget.user.name,
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white)),
+                                SizedBox(height: mq.height * .005),
 
-                              // Last seen
-                              Container(
-                                  child:MarqueeText(
+                                // Last seen
+                                Container(
+                                  child: MarqueeText(
                                     text: TextSpan(
-                                        text:list.isNotEmpty
+                                        text: list.isNotEmpty
                                             ? list[0].isOnline
-                                            ? 'Online'
-                                            : MyDate.getLastActiveTime(context: context, lastActive: list[0].lastActive)
-                                            : MyDate.getLastActiveTime(context: context, lastActive: widget.user.lastActive)
-                                    ),
+                                                ? 'Online'
+                                                : MyDate.getLastActiveTime(
+                                                    context: context,
+                                                    lastActive:
+                                                        list[0].lastActive)
+                                            : MyDate.getLastActiveTime(
+                                                context: context,
+                                                lastActive:
+                                                    widget.user.lastActive)),
                                     speed: 10,
                                     alwaysScroll: false,
-                                    style: TextStyle(color: CupertinoColors.white),
+                                    style:
+                                        TextStyle(color: CupertinoColors.white),
                                   ),
-                              ),
-                            ],
-                          );
-                        },
-                      )
-                    ),
+                                ),
+                              ],
+                            );
+                          },
+                        )),
                     SizedBox(
                       width: mq.width * .2,
                     ),
@@ -190,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                               if (_list.isNotEmpty) {
                                 return ListView.builder(
-                                  reverse :true,
+                                    reverse: true,
                                     physics: BouncingScrollPhysics(),
                                     itemCount: _list.length,
                                     itemBuilder: (context, index) {
@@ -209,8 +217,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                       ),
                     ),
-
-                  if(_isUploading)
+                    if (_isUploading)
                       Align(
                         alignment: Alignment.centerRight,
                         child: Padding(
@@ -218,7 +225,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: CircularProgressIndicator(),
                         ),
                       ),
-
                     SizedBox(height: 90, child: Expanded(child: _chatInput())),
                     if (_showEmoji)
                       Flexible(
@@ -286,14 +292,15 @@ class _ChatScreenState extends State<ChatScreen> {
                   IconButton(
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
-                        final List<XFile>? images2 = await picker.pickMultiImage(imageQuality: 80);
+                        final List<XFile>? images2 =
+                            await picker.pickMultiImage(imageQuality: 80);
 
-                        for(var i in images2!){
+                        for (var i in images2!) {
                           setState(() => _isUploading = true);
-                          ApIs. sendChatImage(widget.user, File(i.path));
+                          ApIs.sendChatImage(widget.user, File(i.path));
                           setState(() => _isUploading = false);
-                        };
-
+                        }
+                        ;
                       },
                       icon: Icon(
                         Icons.image,
@@ -303,16 +310,15 @@ class _ChatScreenState extends State<ChatScreen> {
                   // Camera Button
                   IconButton(
                       onPressed: () async {
-                            final ImagePicker picker = ImagePicker();
-                            final XFile? image = await picker.pickImage(
+                        final ImagePicker picker = ImagePicker();
+                        final XFile? image = await picker.pickImage(
                             source: ImageSource.camera, imageQuality: 80);
-                            if (image != null) {
-                              setState(() => _isUploading = true);
-                            ApIs. sendChatImage(widget.user, File(image.path));
-                              setState(() => _isUploading = false);
-                            }
-                            },
-
+                        if (image != null) {
+                          setState(() => _isUploading = true);
+                          ApIs.sendChatImage(widget.user, File(image.path));
+                          setState(() => _isUploading = false);
+                        }
+                      },
                       icon: Icon(
                         Icons.camera_alt,
                         size: 20,
@@ -327,7 +333,8 @@ class _ChatScreenState extends State<ChatScreen> {
           MaterialButton(
               onPressed: () {
                 if (_textController.text.isNotEmpty) {
-                  ApIs.sendMessage(widget.user, _textController.text,Type.text);
+                  ApIs.sendMessage(
+                      widget.user, _textController.text, Type.text);
                   _textController.text = '';
                 }
               },
