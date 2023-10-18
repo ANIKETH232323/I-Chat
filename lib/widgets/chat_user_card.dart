@@ -7,6 +7,8 @@ import 'package:i_chat/main.dart';
 import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/screens/ChatScreen.dart';
+import 'package:i_chat/screens/profile_screen.dart';
+import 'package:i_chat/widgets/custom_dialoage.dart';
 
 class chat_user_card extends StatefulWidget{
 
@@ -49,14 +51,19 @@ class _chatUser extends State<chat_user_card> {
 
                 }
                 return ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(mq.height *.3),
-                      child: CachedNetworkImage(
-                        width: mq.height *.055,
-                        height: mq.height *.055,
-                        imageUrl: widget.user.image,
-                        // placeholder: (context, url) => CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => CircleAvatar(child: Icon(CupertinoIcons.person),backgroundColor: Colors.amberAccent),
+                    leading: InkWell(
+                      onTap: () {
+                        showDialog(context: context, builder: (_)=>ProfileDialoge(user: widget.user));
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(mq.height *.3),
+                        child: CachedNetworkImage(
+                          width: mq.height *.055,
+                          height: mq.height *.055,
+                          imageUrl: widget.user.image,
+                          // placeholder: (context, url) => CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => CircleAvatar(child: Icon(CupertinoIcons.person),backgroundColor: Colors.amberAccent),
+                        ),
                       ),
                     ),
                     title: Text(widget.user.name),
