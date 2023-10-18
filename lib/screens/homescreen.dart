@@ -29,8 +29,11 @@ class _HomescreenState extends State<Homescreen> {
     ApIs.userSelfInfo();
     ApIs.updateStatus(true);
     SystemChannels.lifecycle.setMessageHandler((message){
-      if(message.toString().contains('resume')) ApIs.updateStatus(true);
-      if(message.toString().contains('pause')) ApIs.updateStatus( false);
+      if(ApIs.auth.currentUser != null){
+        if(message.toString().contains('resume')) ApIs.updateStatus(true);
+        if(message.toString().contains('pause')) ApIs.updateStatus( false);
+      }
+
       return Future.value(message);
     });
   }

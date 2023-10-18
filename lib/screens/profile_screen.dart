@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -217,10 +218,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: FloatingActionButton.extended(
                     onPressed: () async {
                       Dialogs.showProgressBar(context);
+                       await ApIs.updateStatus(false);
                       await ApIs.auth.signOut().then((value) async => {
                             await GoogleSignIn().signOut().then((value) => {
                                   Navigator.pop(context),
                                   Navigator.pop(context),
+                              ApIs.auth =FirebaseAuth.instance,
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
