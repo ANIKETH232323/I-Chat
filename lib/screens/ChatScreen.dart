@@ -11,6 +11,8 @@ import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
 import 'package:i_chat/widgets/massages_card.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:marquee_text/marquee_text.dart';
+import 'package:scroll_loop_auto_scroll/scroll_loop_auto_scroll.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatUser user;
@@ -61,11 +63,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     SizedBox(
                       height: mq.height * .15,
-                      width: mq.width * .02,
                     ),
                     IconButton(
                         onPressed: () => Navigator.pop(context),
-                        iconSize: 35,
+                        iconSize: 32,
                         // padding: EdgeInsets.only(top: 45,left: 5),
                         icon: Icon(Icons.arrow_back_ios_new_outlined,
                             color: Colors.white)),
@@ -100,11 +101,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
 
                     SizedBox(
-                      width: mq.width * .035,
+                      width: mq.width * .021,
                     ),
 
                     // User Name
                     Container(
+                      width: mq.width * .25,
                       child: StreamBuilder(
                         stream: ApIs.getUserStatusInfo(widget.user),
                         builder: (context, snapshot) {
@@ -128,11 +130,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
                               // Last seen
                               Container(
-
-                                  child:Text(list.isNotEmpty ?
-                                  list[0].isOnline ? 'Online' :
-                                  MyDate.getLastActiveTime(context: context, lastActive: list[0].lastActive) :
-                                  MyDate.getLastActiveTime(context: context, lastActive: widget.user.lastActive))
+                                  child:MarqueeText(
+                                    text: TextSpan(
+                                        text:list.isNotEmpty ?
+                                        list[0].isOnline ? 'Online' :
+                                        MyDate.getLastActiveTime(context: context, lastActive: list[0].lastActive) :
+                                        MyDate.getLastActiveTime(context: context, lastActive: widget.user.lastActive)
+                                    ),
+                                    speed: 10,
+                                    alwaysScroll: false,
+                                  ),
                               ),
                             ],
                           );
@@ -140,7 +147,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       )
                     ),
                     SizedBox(
-                      width: mq.height * .09,
+                      width: mq.width * .2,
                     ),
                     IconButton(
                         onPressed: () {},

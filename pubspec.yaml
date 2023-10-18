@@ -40,6 +40,10 @@ dependencies:
   # for showing emoji
   emoji_picker_flutter: ^1.6.2
 
+  # for text scrolling_text horizontally
+  marquee: ^2.2.3
+  scroll_loop_auto_scroll: ^0.0.5
+  marquee_text: ^2.5.0+1
 
 dev_dependencies:
   flutter_test:
