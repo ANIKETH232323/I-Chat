@@ -8,6 +8,30 @@ class MyDate{
     return TimeOfDay.fromDateTime(date).format(context);
   }
 
+
+  // getting formated time for last seen and read time
+
+  static String getLastSeenReadTime(
+      {required BuildContext context,
+        required String time,
+        }) {
+    final DateTime sent = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
+    final DateTime now = DateTime.now();
+
+    final formattedtime = TimeOfDay.fromDateTime(sent).format(context);
+    if (now.day == sent.day &&
+        now.month == sent.month &&
+        now.year == sent.year) {
+      return formattedtime;
+    }
+
+    return now.year ==sent.year
+        ? '$formattedtime - ${sent.day} ${_getMonth(sent)}'
+        : '$formattedtime - ${sent.day} ${_getMonth(sent)} ${sent.year}';
+  }
+
+
+
   static String getLastMessageTime(
       {required BuildContext context,
         required String sent1,

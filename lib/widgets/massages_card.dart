@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/helper/mydate_donemark.dart';
 import 'package:i_chat/main.dart';
@@ -163,7 +164,12 @@ class _MessageCardState extends State<MessageCard> {
               widget.message.type == Type.text ?
               _OptionItem(icon: Icon(Icons.copy,color: Colors.blueAccent,),
                   name: 'Copy Text',
-                  onTap: (){})
+                  onTap: () async {
+                await Clipboard.setData(ClipboardData(text: widget.message.msg)).
+                then((value){
+                  Navigator.pop(context);
+                });
+                  })
               :
               _OptionItem(icon: Icon(Icons.download_for_offline,color: Colors.blueAccent,),
                   name: 'Save Image',
@@ -192,14 +198,18 @@ class _MessageCardState extends State<MessageCard> {
                 height: mq.height * .02,
               ),
               _OptionItem(icon: Icon(Icons.remove_red_eye,color: Colors.green,),
-                  name: 'Seen At',
-                  onTap: (){}),
+                  name: 'Seen At: ${MyDate.getLastSeenReadTime(context: context, time:  widget.message.sent)}',
+                  onTap: (){
+                  }),
               SizedBox(
                 height: mq.height * .02,
               ),
               _OptionItem(icon: Icon(Icons.remove_red_eye_sharp,color: Colors.red,),
-                  name: 'Read At',
-                  onTap: (){}),
+                  name:widget.message.read.isEmpty? "Read At: Not Seen Yet":
+                  'Read At: ${MyDate.getLastSeenReadTime(context: context, time: widget.message.sent)}',
+                  onTap: (){
+
+                  }),
               SizedBox(
                 height: mq.height * .03,
               ),
