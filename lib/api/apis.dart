@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
@@ -28,6 +29,8 @@ class ApIs {
     return firestore.collection('user').doc(user.uid).get().then((user) async {
       if (user.exists) {
         me = ChatUser.fromJson(user.data()!);
+       await getFirebaseMessageToken();
+        ApIs.updateStatus(true);
       } else {
         await createUser().then((value) => userSelfInfo());
       }
@@ -176,5 +179,22 @@ class ApIs {
       'push_token': me.pushToken,
     });
   }
+
+
+  // FOR PUSH NOTIFICATIONS
+  static FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  // For getting Fire Base message token
+  static Future<void>getFirebaseMessageToken()async{
+   await messaging.requestPermission();
+
+   messaging.getToken().then((value)  {
+     if(value != null){
+       me.pushToken =value;
+       log("Push Token: $value");
+     }
+   });
+  }
+
 
 }
