@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -5,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart';
 import 'package:i_chat/models/Message.dart';
 import 'package:i_chat/models/chatUse.dart';
 
@@ -29,7 +31,7 @@ class ApIs {
     return firestore.collection('user').doc(user.uid).get().then((user) async {
       if (user.exists) {
         me = ChatUser.fromJson(user.data()!);
-       await getFirebaseMessageToken();
+        await getFirebaseMessageToken();
         ApIs.updateStatus(true);
       } else {
         await createUser().then((value) => userSelfInfo());
@@ -104,12 +106,13 @@ class ApIs {
       ChatUser user) {
     return firestore
         .collection('chats/${getConversationId(user.id)}/messages/')
-        .orderBy('sent',descending: true)
+        .orderBy('sent', descending: true)
         .snapshots();
   }
 
   // for sending messages
-  static Future<void> sendMessage(ChatUser ChatUser1, String message1,Type type) async {
+  static Future<void> sendMessage(
+      ChatUser ChatUser1, String message1, Type type) async {
     // message sending time(also use an id)
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -124,35 +127,35 @@ class ApIs {
 
     final ref = firestore
         .collection('chats/${getConversationId(ChatUser1.id)}/messages/');
-    await ref.doc(time).set(message.toJson());
+    await ref.doc(time).set(message.toJson()).then((value) =>
+        sendPushNotification(ChatUser1,type == Type.text ? message1 : 'image'));
   }
 
   // Chats(Collection) --> Conversation Id(doc) --> messages(Collection) --> message(doc)
 
   // Update Read Status of message
-   static Future<void> updateMessageReadStatus(Message message) async {
+  static Future<void> updateMessageReadStatus(Message message) async {
     firestore
         .collection('chats/${getConversationId(message.formId)}/messages/')
         .doc(message.sent)
         .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
   }
 
-
   // get Only last message show in a specific chat
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessages(ChatUser user){
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessages(
+      ChatUser user) {
     return firestore
         .collection('chats/${getConversationId(user.id)}/messages/')
-    .orderBy('sent',descending: true)
+        .orderBy('sent', descending: true)
         .limit(1)
         .snapshots();
-
   }
 
-
-  static Future<void> sendChatImage(ChatUser chatUser,File file) async {
+  static Future<void> sendChatImage(ChatUser chatUser, File file) async {
     final ext = file.path.split('.').last;
-    final ref = storage.ref().child('Sending_images/${getConversationId(chatUser.id)}/${DateTime.now().millisecondsSinceEpoch}.$ext');
+    final ref = storage.ref().child(
+        'Sending_images/${getConversationId(chatUser.id)}/${DateTime.now().millisecondsSinceEpoch}.$ext');
     await ref
         .putFile(file, SettableMetadata(contentType: 'images/$ext'))
         .then((p0) {
@@ -161,17 +164,18 @@ class ApIs {
 
     // updating image in firestore database
     final imageUrl = await ref.getDownloadURL();
-    await sendMessage( chatUser, imageUrl, Type.image);
+    await sendMessage(chatUser, imageUrl, Type.image);
   }
 
-
   // get user last seen or online info showing
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getUserStatusInfo(ChatUser chatUser) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getUserStatusInfo(
+      ChatUser chatUser) {
     return firestore
         .collection('user')
         .where('id', isEqualTo: chatUser.id)
         .snapshots();
   }
+
   static Future<void> updateStatus(bool isOnline) async {
     firestore.collection('user').doc(user.uid).update({
       'is_online': isOnline,
@@ -180,21 +184,45 @@ class ApIs {
     });
   }
 
-
   // FOR PUSH NOTIFICATIONS
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   // For getting Fire Base message token
-  static Future<void>getFirebaseMessageToken()async{
-   await messaging.requestPermission();
+  static Future<void> getFirebaseMessageToken() async {
+    await messaging.requestPermission();
 
-   messaging.getToken().then((value)  {
-     if(value != null){
-       me.pushToken =value;
-       log("Push Token: $value");
-     }
-   });
+    messaging.getToken().then((value) {
+      if (value != null) {
+        me.pushToken = value;
+        log("Push Token: $value");
+      }
+    });
   }
 
+  static Future<void> sendPushNotification(ChatUser chatUser,String msg) async {
+    try{
+      var url = Uri.https('example.com', 'whatsit/create');
 
+      final body = {
+        "to":chatUser.pushToken,
+        "notification":{
+          "title":chatUser.name,
+          "body" :msg
+        }
+      };
+
+      var response = await post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          headers: {
+            HttpHeaders.contentTypeHeader:'application/json',
+            HttpHeaders.authorizationHeader:
+            "key = AAAA9b1wpkE:APA91bH5Fde27lGIAjs2jDLCedVy5SY1dvlY10Ja6bBGsYv09f-_EMhxKZqzYGBhEKZwQlpVW_jqT0BiHJgywXPdC6JeE1WAecJnhjL_PXmI8favtjlcQI9tSUnOYOdhSxEkZ9GEaDL2"
+          },
+          body: jsonEncode(body));
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+    }
+        catch(e){
+      log('\nsendPushNotificationE:$e');
+        }
+  }
 }
