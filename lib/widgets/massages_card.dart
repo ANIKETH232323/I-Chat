@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:i_chat/api/apis.dart';
+import 'package:i_chat/helper/dialoage.dart';
 import 'package:i_chat/helper/mydate_donemark.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/Message.dart';
@@ -164,11 +165,18 @@ class _MessageCardState extends State<MessageCard> {
               widget.message.type == Type.text ?
               _OptionItem(icon: Icon(Icons.copy,color: Colors.blueAccent,),
                   name: 'Copy Text',
-                  onTap: () async {
-                await Clipboard.setData(ClipboardData(text: widget.message.msg)).
-                then((value){
-                  Navigator.pop(context);
-                });
+                  onTap: ()  {
+                if(mounted){
+                   Clipboard.setData(
+                      ClipboardData(text: widget.message.msg))
+                      .then((value) {
+                    //for hiding bottom sheet
+                    Navigator.pop(context);
+
+                  });
+                   Dialogs.showSnackBarSuccessful(context, 'Successful');
+                }
+
                   })
               :
               _OptionItem(icon: Icon(Icons.download_for_offline,color: Colors.blueAccent,),
@@ -192,7 +200,12 @@ class _MessageCardState extends State<MessageCard> {
               if(isMe)
               _OptionItem(icon: Icon(Icons.delete,color: Colors.red,),
                   name: 'Delete Text',
-                  onTap: (){}),
+                  onTap: () async {
+
+                await ApIs.deleteMessage(widget.message).then((value){
+                  Navigator.pop(context);
+                });
+                  }),
               Divider(color: Colors.black26,indent: 17,endIndent: 17),
               SizedBox(
                 height: mq.height * .02,

@@ -52,10 +52,14 @@ dependencies:
 
   flutter_notification_channel: ^2.0.0
 
+  awesome_snackbar_content_new: ^0.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.13.1"
+
+
 
 
 

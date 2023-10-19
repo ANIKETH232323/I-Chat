@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content_new/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/main.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -44,6 +45,29 @@ class Dialogs {
       CustomSnackBar.success(message: msg),
     );
   }
+
+  // static void showSnackBarCopySuccessful(
+  //     BuildContext context) {
+  //   final snackBar = SnackBar(
+  //     /// need to set following properties for best effect of awesome_snackbar_content_new
+  //     elevation: 0,
+  //     behavior: SnackBarBehavior.floating,
+  //     backgroundColor: Colors.transparent,
+  //     content: AwesomeSnackbarContent(
+  //       title: 'On Snap!',
+  //       message:
+  //       'This is an example error message that will be shown in the body of snackbar!',
+  //
+  //       /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+  //       contentType: ContentType.failure,
+  //     ),
+  //   );
+  //
+  //   ScaffoldMessenger.of(context)
+  //     ..hideCurrentSnackBar()
+  //     ..showSnackBar(snackBar);
+  //
+  // }
 
   static void showProgressBar(BuildContext context) {
     showDialog(
