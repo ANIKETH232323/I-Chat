@@ -22,7 +22,7 @@ class _MessageCardState extends State<MessageCard> {
     bool isMe = ApIs.user.uid == widget.message.formId;
     return InkWell(
       onLongPress: (){
-        _showBottomSheetForMessage();
+        _showBottomSheetForMessage(isMe);
       },
       child: isMe ? _greenMessage() : _blueMessage(),);
 
@@ -149,7 +149,7 @@ class _MessageCardState extends State<MessageCard> {
 
   // buttom sheet
 
-  void _showBottomSheetForMessage() {
+  void _showBottomSheetForMessage(bool isMe) {
     showModalBottomSheet(
         context: context,
         showDragHandle: true,
@@ -160,22 +160,34 @@ class _MessageCardState extends State<MessageCard> {
           return ListView(
             shrinkWrap: true,
             children: [
+              widget.message.type == Type.text ?
               _OptionItem(icon: Icon(Icons.copy,color: Colors.blueAccent,),
                   name: 'Copy Text',
+                  onTap: (){})
+              :
+              _OptionItem(icon: Icon(Icons.download_for_offline,color: Colors.blueAccent,),
+                  name: 'Save Image',
                   onTap: (){}),
-              SizedBox(
-                height: mq.height * .02,
-              ),
-              _OptionItem(icon: Icon(Icons.edit,color: Colors.blueAccent,),
-                  name: 'Edit Text',
-                  onTap: (){}),
+
 
               SizedBox(
                 height: mq.height * .02,
               ),
+              if(widget.message.type == Type.text && isMe)
+              _OptionItem(icon: Icon(Icons.edit,color: Colors.blueAccent,),
+                  name: 'Edit Text',
+                  onTap: (){}),
+              if(isMe)
+              Divider(color: Colors.black26,indent: 17,endIndent: 17),
+              if(isMe)
+              SizedBox(
+                height: mq.height * .02,
+              ),
+              if(isMe)
               _OptionItem(icon: Icon(Icons.delete,color: Colors.red,),
                   name: 'Delete Text',
                   onTap: (){}),
+              Divider(color: Colors.black26,indent: 17,endIndent: 17),
               SizedBox(
                 height: mq.height * .02,
               ),
@@ -185,7 +197,6 @@ class _MessageCardState extends State<MessageCard> {
               SizedBox(
                 height: mq.height * .02,
               ),
-
               _OptionItem(icon: Icon(Icons.remove_red_eye_sharp,color: Colors.red,),
                   name: 'Read At',
                   onTap: (){}),
