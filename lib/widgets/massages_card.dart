@@ -19,9 +19,13 @@ class MessageCard extends StatefulWidget{
 class _MessageCardState extends State<MessageCard> {
   @override
   Widget build(BuildContext context) {
-    return ApIs.user.uid == widget.message.formId
-        ? _greenMessage()
-        : _blueMessage();
+    bool isMe = ApIs.user.uid == widget.message.formId;
+    return InkWell(
+      onLongPress: (){
+        _showBottomSheetForMessage();
+      },
+      child: isMe ? _greenMessage() : _blueMessage(),);
+
   }
 
 
@@ -143,9 +147,80 @@ class _MessageCardState extends State<MessageCard> {
     );
   }
 
-  // our or user message
+  // buttom sheet
 
+  void _showBottomSheetForMessage() {
+    showModalBottomSheet(
+        context: context,
+        showDragHandle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25), topRight: Radius.circular(25))),
+        builder: (_) {
+          return ListView(
+            shrinkWrap: true,
+            children: [
+              _OptionItem(icon: Icon(Icons.copy,color: Colors.blueAccent,),
+                  name: 'Copy Text',
+                  onTap: (){}),
+              SizedBox(
+                height: mq.height * .02,
+              ),
+              _OptionItem(icon: Icon(Icons.edit,color: Colors.blueAccent,),
+                  name: 'Edit Text',
+                  onTap: (){}),
 
+              SizedBox(
+                height: mq.height * .02,
+              ),
+              _OptionItem(icon: Icon(Icons.delete,color: Colors.red,),
+                  name: 'Delete Text',
+                  onTap: (){}),
+              SizedBox(
+                height: mq.height * .02,
+              ),
+              _OptionItem(icon: Icon(Icons.remove_red_eye,color: Colors.green,),
+                  name: 'Seen At',
+                  onTap: (){}),
+              SizedBox(
+                height: mq.height * .02,
+              ),
+
+              _OptionItem(icon: Icon(Icons.remove_red_eye_sharp,color: Colors.red,),
+                  name: 'Read At',
+                  onTap: (){}),
+              SizedBox(
+                height: mq.height * .03,
+              ),
+
+            ],
+          );
+        });
+  }
 }
+
+class _OptionItem extends StatelessWidget{
+
+  final Icon icon;
+  final String name;
+  final VoidCallback onTap;
+const _OptionItem({required this.icon, required this.name, required this.onTap});
+
+
+  @override
+  Widget build(BuildContext context) {
+   return InkWell(
+     onTap: () => onTap,
+     child: Padding(
+       padding: EdgeInsets.symmetric(horizontal: 25,vertical: 15),
+       child: Row(
+         children: [
+            icon,
+           Text("  $name",style: TextStyle(fontSize: 18,letterSpacing: .5),)
+         ],
+       ),
+     ),
+   );
+  }}
 
 
