@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_notification_channel/flutter_notification_channel.dart';
+import 'package:flutter_notification_channel/notification_importance.dart';
+import 'package:flutter_notification_channel/notification_visibility.dart';
 import 'package:i_chat/screens/auth/login_screen.dart';
 import 'firebase_options.dart';
 
@@ -13,6 +16,7 @@ Future main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown]).then((value){
     _initialFirebase();
+
     runApp(const MyApp());
   });
 
@@ -47,6 +51,17 @@ class MyApp extends StatelessWidget {
 
 _initialFirebase() async {
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,);
+  var result = await FlutterNotificationChannel.registerNotificationChannel(
+    description: 'For Showing Message Notifications',
+    id: 'ChatsID',
+    importance: NotificationImportance.IMPORTANCE_HIGH,
+    name: 'CHATS',
+    visibility: NotificationVisibility.VISIBILITY_PUBLIC,
+    allowBubbles: true,
+    enableVibration: true,
+    enableSound: true,
+    showBadge: true,
   );
+  
 }
