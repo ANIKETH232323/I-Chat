@@ -220,7 +220,6 @@ class ApIs {
 
   static Future<void> sendPushNotification(ChatUser chatUser,String msg) async {
     try{
-
       final body = {
         "to":chatUser.pushToken,
         "notification":{
@@ -247,6 +246,38 @@ class ApIs {
       log('\nsendPushNotificationE:$e');
         }
   }
+
+
+  static Future<void> sendCallPushNotification(ChatUser chatUser,String msg) async {
+    try{
+      final body = {
+        "to":chatUser.pushToken,
+        "notification":{
+          "title":chatUser.name,
+          "body" :msg,
+          "android_channel_id" :"ChatsID"
+        },
+        "data": {
+          "Some_Data" : "User ID: ${me.id}",
+        },
+      };
+
+      var response = await post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          headers: {
+            HttpHeaders.contentTypeHeader:'application/json',
+            HttpHeaders.authorizationHeader:
+            "key = API_GOOGLE_MESSAGE_KEY"
+          },
+          body: jsonEncode(body));
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+    }
+        catch(e){
+      log('\nsendPushNotificationE:$e');
+        }
+  }
+
+
   static Future<void> deleteMessage(Message message) async {
     await firestore
         .collection('chats/${getConversationId(message.told)}/messages/')

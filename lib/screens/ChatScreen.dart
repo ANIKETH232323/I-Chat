@@ -5,6 +5,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_chat/api/apis.dart';
+import 'package:i_chat/calling_VideoCalling/CallPage.dart';
 import 'package:i_chat/helper/mydate_donemark.dart';
 import 'package:i_chat/main.dart';
 import 'package:i_chat/models/Message.dart';
@@ -176,7 +177,11 @@ class _ChatScreenState extends State<ChatScreen> {
                         iconSize: 28,
                         icon: Icon(Icons.call_sharp, color: Colors.white)),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Mycall(callID:"123",userID: widget.user.id,userName: widget.user.name),)
+                            );
+                        },
                         iconSize: 28,
                         icon: Icon(Icons.videocam_sharp, color: Colors.white)),
                   ],

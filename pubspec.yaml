@@ -54,7 +54,12 @@ dependencies:
 
   awesome_snackbar_content_new: ^0.1.2
 
+
   gallery_saver: ^2.3.2
+
+  zego_uikit_prebuilt_call: ^3.16.2
+
+  zego_uikit_signaling_plugin: ^2.6.1
 
 dev_dependencies:
   flutter_test:
