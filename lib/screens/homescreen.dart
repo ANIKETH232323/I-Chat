@@ -161,11 +161,7 @@ class _HomescreenState extends State<Homescreen> {
                                 case ConnectionState.done:
                                 return StreamBuilder(
                                   stream: ApIs.getAllUser(
-                                      snapshot.data?.docs.map((e) =>
-                                          e.id)
-                                          .toList() ??
-                                          [],
-                                  ),
+                                      snapshot.data?.docs.map((e) => e.id).toList() ?? []),
                                   builder: (context, snapshot) {
                                     switch (snapshot.connectionState) {
                                     // if Data is loading

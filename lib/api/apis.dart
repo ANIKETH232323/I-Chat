@@ -66,8 +66,17 @@ class ApIs {
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUser(List<String>userIds) {
     return firestore
         .collection('user')
-        .where('id',whereIn: userIds)
+        .where('id', whereIn: userIds.isEmpty
+        ? ['']
+        : userIds)
         .snapshots();
+  }
+
+  static Future<void> sendFirstMessage(ChatUser ChatUser1, String message1, Type type) async {
+    await firestore.collection('user').doc(ChatUser1.id).collection('My_User').doc(user.uid).set({})
+    .then((value){
+      sendMessage(ChatUser1, message1, type);
+    });
   }
 
   // for update name and about in firebase after changing in profile section
