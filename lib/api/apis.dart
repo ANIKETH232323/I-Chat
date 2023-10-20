@@ -63,10 +63,10 @@ class ApIs {
 
   // for getting all user  from firestore database
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUser() {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUser(List<String>userIds) {
     return firestore
         .collection('user')
-        .where('id', isNotEqualTo: user.uid)
+        .where('id',whereIn: userIds)
         .snapshots();
   }
 
@@ -257,5 +257,27 @@ class ApIs {
         .doc(message.sent)
         .update({'msg':updated_msg});
     
+  }
+
+
+
+  static Future<bool> addChatUserCheck(String email) async {
+    final data = await firestore.collection('user').where("email",isEqualTo: email).get();
+    if(data.docs.isNotEmpty && data.docs.first.id !=user.uid){
+     firestore.collection("user").doc(user.uid).collection('My_User').doc(data.docs.first.id).set({});
+      return true;
+    }
+    else{
+      return false;
+    }
+    
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getMyUserId() {
+    return firestore
+        .collection('user')
+        .doc(user.uid)
+        .collection("My_User")
+        .snapshots();
   }
 }
