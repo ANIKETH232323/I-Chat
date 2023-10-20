@@ -1,6 +1,10 @@
+
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:i_chat/api/apis.dart';
 import 'package:i_chat/helper/dialoage.dart';
 import 'package:i_chat/helper/mydate_donemark.dart';
@@ -165,9 +169,9 @@ class _MessageCardState extends State<MessageCard> {
               widget.message.type == Type.text ?
               _OptionItem(icon: Icon(Icons.copy,color: Colors.blueAccent,),
                   name: 'Copy Text',
-                  onTap: ()  {
+                  onTap: ()  async {
                 if(mounted){
-                   Clipboard.setData(
+                   await Clipboard.setData(
                       ClipboardData(text: widget.message.msg))
                       .then((value) {
                     //for hiding bottom sheet
@@ -181,7 +185,19 @@ class _MessageCardState extends State<MessageCard> {
               :
               _OptionItem(icon: Icon(Icons.download_for_offline,color: Colors.blueAccent,),
                   name: 'Save Image',
-                  onTap: (){}),
+                  onTap: () async {
+                try{
+                  await GallerySaver.saveImage(widget.message.msg,albumName: 'I CHATS').then((success) {
+                    Navigator.pop(context);
+                    if(success != null && success)
+                      Dialogs.showSnackBarSuccessful(context, "Downloaded");
+
+                  });
+                }
+                catch(e){
+                  log('Error while saving image: $e');
+                }
+                  }),
 
 
               SizedBox(
@@ -190,7 +206,11 @@ class _MessageCardState extends State<MessageCard> {
               if(widget.message.type == Type.text && isMe)
               _OptionItem(icon: Icon(Icons.edit,color: Colors.blueAccent,),
                   name: 'Edit Text',
-                  onTap: (){}),
+                  onTap: (){
+                Navigator.pop(context);
+                _showMessageUpdateDialog();
+
+                  }),
               if(isMe)
               Divider(color: Colors.black26,indent: 17,endIndent: 17),
               if(isMe)
@@ -231,6 +251,68 @@ class _MessageCardState extends State<MessageCard> {
           );
         });
   }
+  void _showMessageUpdateDialog() {
+    String updatedMsg = widget.message.msg;
+
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          contentPadding: const EdgeInsets.only(
+              left: 24, right: 24, top: 20, bottom: 10),
+
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20)),
+
+          //title
+          title: Row(
+            children: const [
+              Icon(
+                Icons.message,
+                color: Colors.blue,
+                size: 28,
+              ),
+              Text(' Update Message')
+            ],
+          ),
+
+          //content
+          content: TextFormField(
+            initialValue: updatedMsg,
+            maxLines: null,
+            onChanged: (value) => updatedMsg = value,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15))),
+          ),
+
+          //actions
+          actions: [
+            //cancel button
+            MaterialButton(
+                onPressed: () {
+                  //hide alert dialog
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.blue, fontSize: 16),
+                )),
+
+            //update button
+            MaterialButton(
+                onPressed: () {
+                  //hide alert dialog
+                  Navigator.pop(context);
+                  ApIs.UpdateMessage(widget.message, updatedMsg);
+                },
+                child: const Text(
+                  'Update',
+                  style: TextStyle(color: Colors.blue, fontSize: 16),
+                ))
+          ],
+        ));
+  }
+
 }
 
 class _OptionItem extends StatelessWidget{
@@ -256,5 +338,10 @@ const _OptionItem({required this.icon, required this.name, required this.onTap})
      ),
    );
   }}
+
+
+
+//dialog for updating message content
+
 
 
